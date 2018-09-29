@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RcdScrollView" customModule="GN" customModuleProvider="target">
+            <connections>
+                <outlet property="collectionView" destination="LPe-bs-yMh" id="xvn-wA-B5i"/>
+                <outlet property="page" destination="h9z-za-9Rz" id="Yff-nw-3rX"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="335" height="223"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="LPe-bs-yMh">
+                    <rect key="frame" x="0.0" y="0.0" width="335" height="223"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="AUb-7b-yxq">
+                        <size key="itemSize" width="50" height="50"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
+                <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="h9z-za-9Rz">
+                    <rect key="frame" x="148" y="176" width="39" height="37"/>
+                </pageControl>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="h9z-za-9Rz" secondAttribute="bottom" constant="10" id="R5P-fv-z0H"/>
+                <constraint firstItem="h9z-za-9Rz" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="VMl-2P-Fpc"/>
+                <constraint firstItem="LPe-bs-yMh" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="W5h-bX-GVU"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="LPe-bs-yMh" secondAttribute="bottom" id="ZLb-Nz-8nv"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="LPe-bs-yMh" secondAttribute="trailing" id="aI0-SP-ivH"/>
+                <constraint firstItem="LPe-bs-yMh" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="d6S-ug-5UX"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="106.40000000000001" y="293.70314842578711"/>
+        </view>
+    </objects>
+</document>

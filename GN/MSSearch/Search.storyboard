@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--SearchVC-->
+        <scene sceneID="DK1-SU-VQf">
+            <objects>
+                <tableViewController storyboardIdentifier="SearchVC" id="9Ix-d6-3Yy" customClass="SearchVC" customModule="GN" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="HWC-ZR-OpF">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" id="ql1-zQ-EU9">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="9Ix-d6-3Yy" id="bpz-7V-fAb"/>
+                            </connections>
+                        </searchBar>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="KGe-aM-7eN">
+                                <rect key="frame" x="0.0" y="72" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="KGe-aM-7eN" id="AFb-lH-xvc">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="9Ix-d6-3Yy" id="zyk-0B-9AR"/>
+                            <outlet property="delegate" destination="9Ix-d6-3Yy" id="NmE-GG-YCy"/>
+                        </connections>
+                    </tableView>
+                    <connections>
+                        <outlet property="searchBar" destination="ql1-zQ-EU9" id="vMP-qp-A8u"/>
+                        <outlet property="searchDisplayController" destination="puO-eM-lBC" id="i8e-Zv-9Nh"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vK6-BD-rtg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="puO-eM-lBC">
+                    <connections>
+                        <outlet property="delegate" destination="9Ix-d6-3Yy" id="ry7-0U-NBk"/>
+                        <outlet property="searchBar" destination="ql1-zQ-EU9" id="RYr-uH-GJt"/>
+                        <outlet property="searchContentsController" destination="9Ix-d6-3Yy" id="piE-Fu-ZZ0"/>
+                        <outlet property="searchResultsDataSource" destination="9Ix-d6-3Yy" id="Rxy-u8-ZAm"/>
+                        <outlet property="searchResultsDelegate" destination="9Ix-d6-3Yy" id="1Xn-Dj-Cn2"/>
+                    </connections>
+                </searchDisplayController>
+            </objects>
+            <point key="canvasLocation" x="30" y="216"/>
+        </scene>
+    </scenes>
+</document>
