@@ -23,9 +23,11 @@ class MSScrollCell: UICollectionViewCell {
             
             guard newValue === view  else {
                 
-                let  v = newValue as! UIView
+                
+                print(newValue?.frame)
+                let  v = newValue
 //                v.frame = self.contentView.frame
-                self.contentView .addSubview(v)
+                self.contentView.addSubview(v!)
                 return
             }
         }

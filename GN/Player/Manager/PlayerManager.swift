@@ -154,13 +154,14 @@ class PlayerManager: NSObject {
             print("unknown")
         case .readyToPlay:
             
+            self.playState.value = true
             duration.value = String.stringWithSeconds(seconds: durationTime())
             timer.fireDate = Date.distantPast
             self.observer?.send(Signal<Any, NoError>.Event.value(""))
-
+            
         case .failed:
             print("unknown")
-
+            self.playState.value = false
         }
     }
     
@@ -190,14 +191,12 @@ extension PlayerManager {
         HistoryDao.insertModel(model: ma.vm.model.value)
         ma.player.replaceCurrentItem(with: ma.playItem)
         
-        print("ma.player.items() is \(ma.player.items())")
-
+        
         self.play(true)
         
         ma.playItem?.addObserver(ma, forKeyPath: "status", options: [.new,.old], context: nil)   //  系统提供可以直接使用addObserver
         ma.playItem?.addObserver(ma, forKeyPath: "loadedTimeRanges", options: [.new,.old], context: nil)
 
-        
 //        ma.timer.fireDate = Date.distantFuture
         ma.observer!.send(Signal.Event.completed)  // k获取歌词
         
@@ -214,7 +213,6 @@ extension PlayerManager {
             
             play ? ma.player.play() : ma.player.pause()
             ma.timer.fireDate = Date.distantFuture
-            ma.playState.value = play
         }
     }
     
@@ -259,7 +257,6 @@ extension PlayerManager {
             PlayerManager.play(url: URL.init(string: ma.vm.model.value.songLink as! String)!)
 
         }
-
         
     }
  
@@ -268,8 +265,9 @@ extension PlayerManager {
 extension  PlayerManager  {
     
     
-    class func  playWithSongID(_ songID: String)  {
+    class func  playWithSongID(_ songID: String) -> GNSignal<Any, GNNoError>  {
     
+        let (signal, ob) = GNSignal<Any, GNNoError>.pipe()
         if ma.historyDic[songID] == nil {
             
             ma.vm.getSong(singID: songID).observeCompleted {
@@ -277,15 +275,17 @@ extension  PlayerManager  {
                 ma.history.append( ma.vm.model.value)
                 ma.historyDic[songID] = ma.vm.model.value
                 PlayerManager.play(url: URL.init(string: ma.vm.model.value.songLink as! String)!)
+                ob.sendCompleted()
             }
            
         } else {
             
             ma.vm.model.value = ma.historyDic[songID]!
             PlayerManager.play(url: URL.init(string:  ma.vm.model.value.songLink as! String)!)
-
+            ob.sendCompleted()
         }
+        return signal
     }
-
+    
 }
 

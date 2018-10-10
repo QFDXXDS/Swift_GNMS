@@ -17,12 +17,11 @@ class RcdScrollCell: UICollectionViewCell {
     var model: RcdScrollModel? {
         willSet {
 
-            guard let m = model  else {
+            guard model?.song_id == newValue?.song_id  else {
                 
                 imgView.kf.setImage(with: ImageResource.init(downloadURL: URL.init(string: newValue!.pic_big as! String )!) )
                 return
                 }
-
             }
     }
 }

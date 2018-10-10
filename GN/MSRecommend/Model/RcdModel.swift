@@ -38,14 +38,14 @@ struct  RcdModel: GNHandyJSON {
 struct RcdScrollModel: GNHandyJSON {
     
     var title : Any?
-    var song_id : Any?
+    var song_id : Int?
     var artist_name : Any?
     var pic_big : Any?
     var hot : Any?
     var file_duration : Any?
     
     
-    static  func wrraperData(object: Dictionary<String,Any>) -> Array<Any> {
+    static  func wrraperData(object: Dictionary<String,Any>) -> Array<RcdScrollModel> {
 
         let arr :Array<Any> = object["song_list"] as! Array
         
@@ -55,6 +55,11 @@ struct RcdScrollModel: GNHandyJSON {
             let dic1 = dic as! Dictionary<String, Any>
             let model = RcdScrollModel.deserialize(from: dic1)
             temp.append(model!)
+            
+            if temp.count > 2 {
+                
+                break
+            }
         }
         return temp
     }

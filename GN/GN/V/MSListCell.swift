@@ -27,11 +27,16 @@ class MSListCell: UITableViewCell {
         
         willSet {
             
+            if newValue?.song_id == PlayerManager.ma.vm.model.value.songId   {
+                
+                playBt.isSelected = PlayerManager.ma.playState.value
+            }
+            
             guard  model?.song_id == newValue?.song_id else{
 //
 //                title.text = model![keyPath: \RcdModel.title] as! String
                 title.text = newValue?.title as? String
-                //          强制类型检查  format: "%02@:%02@", 报错
+      //          强制类型检查  format: "%02@:%02@", 报错
                 time.text = String.init(format: "%02d:%02d", (newValue?.file_duration as! Int)/60,(newValue?.file_duration as! Int)%60)
                 artist_name.text = newValue?.artist_name as? String
 
@@ -39,24 +44,31 @@ class MSListCell: UITableViewCell {
                 
                 return
             }
+            
+//            print("willSet id")
+//            print(newValue?.song_id)
+//            print(PlayerManager.ma.vm.model.value.songId)
+
+            
         }
     }
     @IBAction func onButton(_ sender: UIButton) {
         
-        if sender.isSelected {
-            
-            PlayerManager.play(sender.isSelected)
-        } else {
-            
-            let id: Int = model!.song_id ?? 0
-            PlayerManager.playWithSongID("\(id)")
-        }
+//        if sender.isSelected {
+//
+//            PlayerManager.play(sender.isSelected)
+//        } else {
+//
+//            let id: Int = model!.song_id ?? 0
+//            PlayerManager.playWithSongID("\(id)")
+//        }
+        
+        
     }
     override func awakeFromNib() {
         super.awakeFromNib()
 
 //        playBt.reactive.isSelected <~ PlayerManager.ma.playState
-
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

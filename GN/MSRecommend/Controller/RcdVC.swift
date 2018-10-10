@@ -30,8 +30,11 @@ class RcdVC: UIViewController {
         var titleArray = ["RcdMainVC","RcdSingerVC","RcdHotVC"]
         for title in titleArray {
             
-            var vc = self.storyboard?.instantiateViewController(withIdentifier: title)
-            
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: title)
+            vc!.view.frame = CGRect.init(x: 0, y:0, width: kScreenWidth, height:self.collectionView.frame.height - 50 )
+
+            print("vc!.view.frame")
+            print(vc!.view.frame)
             self.addChildViewController(vc!)
             temp.append(vc as Any)
         }
@@ -49,6 +52,11 @@ class RcdVC: UIViewController {
         self.collectionView.dataSource = self
         self.collectionView.reloadData()
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
+        
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

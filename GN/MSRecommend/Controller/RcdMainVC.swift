@@ -13,18 +13,25 @@ import Result
 
 
 
-class RcdMainVC: UITableViewController {
+class RcdMainVC: UIViewController {
     
     let vm = RcdVM()
-    
+    var selectArray = [IndexPath]()
     var page =  1
     var size = 20
+    
+    @IBOutlet weak var tableView: UITableView!
+    
+    @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupUI()
         loadData()
     
+        print(self.view.frame)
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
@@ -39,7 +46,6 @@ class RcdMainVC: UITableViewController {
             GNHUD.flash(GNHUDContentType.success, delay: 1.0)
             self.tableView.reloadData()
         }
-       
     }
     func setupUI()  {
         
@@ -55,6 +61,14 @@ class RcdMainVC: UITableViewController {
         
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        
+        DispatchQueue.main.async {
+            
+            self.tableViewHeight.constant = self.view.frame.height
+
+        }
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -67,25 +81,6 @@ class RcdMainVC: UITableViewController {
     //    }
     
     // MARK: - Table view data source
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return  vm.tableArray.count
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let cell: MSListCell  = tableView.dequeueReusableCell(withIdentifier: "MSRecommendCell", for: indexPath) as! MSListCell
-        
-        cell.model = vm.tableArray[indexPath.row] as? RcdModel
-        
-        return cell
-    }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        tableView.deselectRow(at: indexPath, animated: true)
-        
-    }
 
 //    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
 //        
@@ -94,5 +89,42 @@ class RcdMainVC: UITableViewController {
 
     
     
+    
+}
+
+extension RcdMainVC: UITableViewDelegate,UITableViewDataSource {
+    
+     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // #warning Incomplete implementation, return the number of rows
+        return  vm.tableArray.count
+    }
+    
+     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell: MSListCell  = tableView.dequeueReusableCell(withIdentifier: "MSRecommendCell", for: indexPath) as! MSListCell
+        
+        cell.model = vm.tableArray[indexPath.row] as? RcdModel
+        
+        return cell
+    }
+    
+     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        let model = vm.tableArray[indexPath.row] as? RcdModel
+        let id: Int = model!.song_id ?? 0
+        PlayerManager.playWithSongID("\(id)").observeCompleted {
+            
+            self.tableView.reloadRows(at: self.selectArray, with: UITableViewRowAnimation.none)
+            if (self.selectArray.count > 1) {
+                
+                self.selectArray.removeFirst()
+            }
+        }
+        selectArray.append(indexPath)
+        
+    }
+
     
 }

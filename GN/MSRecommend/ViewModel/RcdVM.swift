@@ -16,7 +16,7 @@ import Result
 class  RcdVM {
 
     var tableArray = Array<Any>()
-    var collectionArray = Array<Any>()
+    var collectionArray = Array<RcdScrollModel>()
 
 
     func getRecommendList(page: Int, size: Int) -> GNSignal<Any, GNNoError >  {
@@ -45,7 +45,12 @@ class  RcdVM {
 
         GN.HTTPRequesgt(req: req).observeValues { (rsp) in
             
-             self.collectionArray = RcdScrollModel.wrraperData(object: rsp as! Dictionary<String, Any>)
+            self.collectionArray = RcdScrollModel.wrraperData(object: rsp as! Dictionary<String, Any>)
+            let first = self.collectionArray.first as! RcdScrollModel
+            let last = self.collectionArray.last as! RcdScrollModel
+
+            self.collectionArray.append(first)
+            self.collectionArray.insert(last, at: 0)
             ob.sendCompleted()
         }
         

@@ -16,8 +16,10 @@ class RcdScrollView: GNView {
     let vm = RcdVM()
     lazy var scrollTimer: Timer = {
     
-        let timer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(self.scroll), userInfo: nil, repeats: true)
+        let timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.scroll), userInfo: nil, repeats: true)
         timer.fireDate = Date.distantFuture
+        
+        RunLoop.main.add(timer, forMode: .commonModes)
        return timer
     }()
 
@@ -31,7 +33,6 @@ class RcdScrollView: GNView {
     
    override func createView() {
     
-
     loadData()
     setUI()
         
@@ -40,8 +41,10 @@ class RcdScrollView: GNView {
         
         vm.getRecommendScrollList().observeCompleted {
             
-            self.scrollTimer.fireDate = Date.init(timeIntervalSinceNow: 2)
+            self.scrollTimer.fireDate = Date.init(timeIntervalSinceNow: 5)
             self.collectionView.reloadData()
+           self.collectionView.setContentOffset(CGPoint.init(x:self.frame.width, y: 0), animated: false)
+
         }
     }
     
@@ -49,22 +52,48 @@ class RcdScrollView: GNView {
     
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.delegate = self
+
         collectionView.register(UINib.init(nibName: RcdScrollCell, bundle: nil), forCellWithReuseIdentifier: "CELL")
+        
     }
 
     @objc func scroll()  {
         
-//        print("123123")
-        self.collectionView.setContentOffset(CGPoint.init(x: self.frame.width, y: 0), animated: true)
+        let offset = self.collectionView.contentOffset.x
+        self.collectionView.setContentOffset(CGPoint.init(x:offset + self.frame.width, y: 0), animated: true)
     }
-    
 }
 
 extension RcdScrollView: UICollectionViewDelegate {
     
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
     
+        if page.currentPage == 2 {
+            
+            self.collectionView.contentOffset.x = self.frame.width
+        }
+        self.page.currentPage = Int(self.collectionView.contentOffset.x / self.collectionView.frame.width) - 1
     
+        print(page.currentPage)
+
+    }
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        scrollTimer.fireDate = Date.distantFuture
+    }
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+
+
+        if self.collectionView.contentOffset.x == 0 {
+            
+            self.collectionView.contentOffset.x = 3 * self.frame.width
+        }
+        scrollViewDidEndScrollingAnimation(collectionView)
+        scrollTimer.fireDate = Date.init(timeIntervalSinceNow: 5)
+    }
+    
+
+    
+   
 }
 
 extension RcdScrollView: UICollectionViewDataSource {
@@ -78,7 +107,6 @@ extension RcdScrollView: UICollectionViewDataSource {
         let cell:RcdScrollCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CELL", for: indexPath) as! RcdScrollCell
         
         cell.model = vm.collectionArray[indexPath.row] as? RcdScrollModel
-    
         return cell
     }
     
@@ -91,4 +119,3 @@ extension RcdScrollView: UICollectionViewDelegateFlowLayout {
         return  CGSize.init(width:kScreenWidth  , height: self.frame.height)
     }
 }
-
