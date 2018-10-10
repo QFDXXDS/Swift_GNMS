@@ -3,40 +3,52 @@ PODS:
   - FMDB (2.7.2):
     - FMDB/standard (= 2.7.2)
   - FMDB/standard (2.7.2)
+  - HandyJSON (4.2.0)
   - Kingfisher (4.8.0)
-  - ReactiveCocoa (7.2.0):
-    - ReactiveSwift (~> 3.1)
-  - ReactiveSwift (3.1.0):
-    - Result (~> 3.2)
-  - Result (3.2.4)
+  - PKHUD (5.2.0)
+  - ReactiveCocoa (8.0.0):
+    - ReactiveSwift (~> 4.0)
+  - ReactiveSwift (4.0.0):
+    - Result (~> 4.0)
+  - Result (4.0.0)
+  - SnapKit (4.0.1)
   - SwiftyJSON (3.1.4)
 
 DEPENDENCIES:
   - Alamofire
   - FMDB
+  - HandyJSON
   - Kingfisher
+  - PKHUD
   - ReactiveCocoa
+  - SnapKit
   - SwiftyJSON
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
     - FMDB
+    - HandyJSON
     - Kingfisher
+    - PKHUD
     - ReactiveCocoa
     - ReactiveSwift
     - Result
+    - SnapKit
     - SwiftyJSON
 
 SPEC CHECKSUMS:
   Alamofire: f28cdffd29de33a7bfa022cbd63ae95a27fae140
   FMDB: 6198a90e7b6900cfc046e6bc0ef6ebb7be9236aa
+  HandyJSON: 9dfc026c7d7adc1f0f8ba8b181495f0e0763b0f4
   Kingfisher: 976d828df2b24834c6a3f2fc4d82cdbd26552be1
-  ReactiveCocoa: 476dae7ca790f40d30d186a1bd7ebae4290395d5
-  ReactiveSwift: 5b26d2e988fe0eed2daf48c4054d1de74db50184
-  Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
+  PKHUD: dd5357ac65f26115c35c4a68e9b328053326c5fe
+  ReactiveCocoa: 87cb64d78424d749a0bbfd9b07e4825e8d834066
+  ReactiveSwift: a2bb9ace428a109e9c0209615645d9d286c8c433
+  Result: 7645bb3f50c2ce726dd0ff2fa7b6f42bbe6c3713
+  SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
-PODFILE CHECKSUM: 955d33af66f4f83117912d18af887e36f6f94156
+PODFILE CHECKSUM: c11940f3d31a31a6dc0300fa9c1463aad7f1695d
 
 COCOAPODS: 1.5.3

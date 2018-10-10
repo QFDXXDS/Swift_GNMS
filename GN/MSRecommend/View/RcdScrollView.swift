@@ -14,7 +14,12 @@ class RcdScrollView: GNView {
     @IBOutlet weak var collectionView: UICollectionView!
     let RcdScrollCell = "RcdScrollCell"
     let vm = RcdVM()
-    var scrollTimer: Timer?
+    lazy var scrollTimer: Timer = {
+    
+        let timer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(self.scroll), userInfo: nil, repeats: true)
+        timer.fireDate = Date.distantFuture
+       return timer
+    }()
 
     /*
     // Only override draw() if you perform custom drawing.
@@ -32,12 +37,12 @@ class RcdScrollView: GNView {
         
     }
     func loadData()  {
-        vm.getRecommendScrollList().startWithCompleted {
+        
+        vm.getRecommendScrollList().observeCompleted {
             
-            self.scrollTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(self.scroll), userInfo: nil, repeats: true)
+            self.scrollTimer.fireDate = Date.init(timeIntervalSinceNow: 2)
             self.collectionView.reloadData()
         }
-
     }
     
     func setUI(){

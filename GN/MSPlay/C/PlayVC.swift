@@ -181,7 +181,7 @@ class PlayVC: UIViewController {
 
 //        case 3:
         case 4:
-            DownloadVM.download(model: PlayerManager.ma.model.value)
+            DownloadVM.download(model: PlayerManager.ma.vm.model.value)
         default:
             break
         }

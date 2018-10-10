@@ -24,12 +24,16 @@ target 'GN' do
 
 #  pod 'RxCocoa'
   pod 'ReactiveCocoa'
-#  pod 'SnapKit'
 ##  pod 'Quick'   Swift编写的单元测试框架--Quick
 #  pod 'Realm'
 ##  pod 'Socket.IO-Client-Swift'
 ##  pod 'Starscream'
 
   pod 'FMDB'
+  
+  pod 'SnapKit'
+  pod 'PKHUD'
+  pod 'HandyJSON'
+
 #  pod 'WCDB'
 end

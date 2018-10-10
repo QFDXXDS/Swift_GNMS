@@ -27,7 +27,7 @@ class MSListCell: UITableViewCell {
         
         willSet {
             
-            guard  model == newValue else{
+            guard  model?.song_id == newValue?.song_id else{
 //
 //                title.text = model![keyPath: \RcdModel.title] as! String
                 title.text = newValue?.title as? String
@@ -48,7 +48,8 @@ class MSListCell: UITableViewCell {
             PlayerManager.play(sender.isSelected)
         } else {
             
-            PlayerManager.playWithSongID(model?.song_id as! String)
+            let id: Int = model!.song_id ?? 0
+            PlayerManager.playWithSongID("\(id)")
         }
     }
     override func awakeFromNib() {

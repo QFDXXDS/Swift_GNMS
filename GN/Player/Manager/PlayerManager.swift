@@ -13,13 +13,12 @@ import ReactiveCocoa
 import ReactiveSwift
 import Result
 
-
-
-
 class PlayerManager: NSObject {
 
+    let vm = PlayerVM()
+    
+
     var name = MutableProperty("")
-    var model = MutableProperty(PlayerModel.init())
     
     var playState = MutableProperty(false)
     var duration = MutableProperty("")
@@ -59,7 +58,7 @@ class PlayerManager: NSObject {
     private override init() {
         
         super.init()
-        
+
         NotificationCenter.default.reactive.notifications(forName: Notification.Name.AVPlayerItemPlaybackStalled).observe { _ in
             
             print("AVPlayerItemPlaybackStalled")
@@ -101,13 +100,14 @@ class PlayerManager: NSObject {
             print("AVPlayerItemPlaybackStalled")
         }
         
+        
         HistoryDao.fetchData { (array) in
             
             if array.count > 0 {
                 
                 self.history.append(contentsOf: array)
-                self.model.value = self.history[0]
-                self.name.value = self.model.value.songName as! String
+                self.vm.model.value = self.history[0]
+                self.name.value = self.vm.model.value.songName as! String
 
             }
         }
@@ -186,8 +186,8 @@ extension PlayerManager {
     class func play(url: URL) {
         
         ma.playItem = AVPlayerItem.init(url: url)
-        ma.name.value = ma.model.value.songName as! String
-        HistoryDao.insertModel(model: ma.model.value)
+        ma.name.value = ma.vm.model.value.songName as! String
+        HistoryDao.insertModel(model: ma.vm.model.value)
         ma.player.replaceCurrentItem(with: ma.playItem)
         
         print("ma.player.items() is \(ma.player.items())")
@@ -208,7 +208,7 @@ extension PlayerManager {
         if ma.playItem == nil {
             
             if ma.history.count > 0 {
-                PlayerManager.play(url: URL.init(string: ma.model.value.songLink as! String)!)
+                PlayerManager.play(url: URL.init(string: ma.vm.model.value.songLink as! String)!)
             }
         } else {
             
@@ -234,13 +234,13 @@ extension PlayerManager {
 
         let index = ma.history.firstIndex { (model) -> Bool in
             
-            return model.songId as! Int == ma.model.value.songId as! Int
+            return model.songId  == ma.vm.model.value.songId
         }
 
         if index! < ma.history.count && index! > 0   {
 
-            ma.model.value = ma.history[index! - 1]
-            PlayerManager.play(url: URL.init(string: ma.model.value.songLink as! String)!)
+            ma.vm.model.value = ma.history[index! - 1]
+            PlayerManager.play(url: URL.init(string: ma.vm.model.value.songLink as! String)!)
 
         }
 
@@ -251,12 +251,12 @@ extension PlayerManager {
 //        ma.player.advanceToNextItem()
         let index = ma.history.firstIndex { (model) -> Bool in
 
-            return model.songId  == ma.model.value.songId
+            return model.songId  == ma.vm.model.value.songId
         }
         if index! < ma.history.count - 1 && ma.history.count > 1  {
 
-            ma.model.value = ma.history[index! + 1]
-            PlayerManager.play(url: URL.init(string: ma.model.value.songLink as! String)!)
+            ma.vm.model.value = ma.history[index! + 1]
+            PlayerManager.play(url: URL.init(string: ma.vm.model.value.songLink as! String)!)
 
         }
 
@@ -272,21 +272,17 @@ extension  PlayerManager  {
     
         if ma.historyDic[songID] == nil {
             
-            PlayerService.getSong(singID: songID, success: { (rsp) in
-                
-                let m = PlayerModel.wrraperData(object: rsp)
-                ma.model.value = m
-                ma.history.append(m)
-                ma.historyDic[songID] = m
-                
-                PlayerManager.play(url: URL.init(string: ma.model.value.songLink as! String)!)
-            }, fail: { (err) in
-                
-            })
+            ma.vm.getSong(singID: songID).observeCompleted {
+            
+                ma.history.append( ma.vm.model.value)
+                ma.historyDic[songID] = ma.vm.model.value
+                PlayerManager.play(url: URL.init(string: ma.vm.model.value.songLink as! String)!)
+            }
+           
         } else {
             
-            ma.model.value = ma.historyDic[songID]!
-            PlayerManager.play(url: URL.init(string: ma.model.value.songLink as! String)!)
+            ma.vm.model.value = ma.historyDic[songID]!
+            PlayerManager.play(url: URL.init(string:  ma.vm.model.value.songLink as! String)!)
 
         }
     }

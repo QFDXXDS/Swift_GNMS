@@ -16,21 +16,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
 
-    func add(_ num: Int) -> () -> Int {
-        
-        
-        let v = 2
-        func a() -> Int {
-            
-            print("func is \(#function)")   //a()
-            print("func is \(#line)")  //行号
-            print("func is \(#file)")  // /Users/xxds/Desktop/GN-MS/GN/GN/AppDelegate.swift
-                print("func is \(#column)")  //列编号
-
-            return v + num
-        }
-        return a
-    }
+//    func add(_ num: Int) -> () -> Int {
+//
+//
+//        let v = 2
+//        func a() -> Int {
+//
+//            print("func is \(#function)")   //a()
+//            print("func is \(#line)")  //行号
+//            print("func is \(#file)")  // /Users/xxds/Desktop/GN-MS/GN/GN/AppDelegate.swift
+//                print("func is \(#column)")  //列编号
+//
+//            return v + num
+//        }
+//        return a
+//    }
 
 
     
@@ -53,9 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        var a = ["333","wewer"]
 //        a.remove(at: 1)
       
-        
-        DAOManager.createDAO()
-        DownloadManager.ma
+        config()
         return true
     }
 
@@ -79,9 +77,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         
         
-        let addTwo = add(2)(), addFour = add(4)(), addSix = add(6), addEight = add(8)
-        var a = ["333","wewer"]
-        a.remove(at: 1)
+//        let addTwo = add(2)(), addFour = add(4)(), addSix = add(6), addEight = add(8)
+//        var a = ["333","wewer"]
+//        a.remove(at: 1)
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -114,11 +112,27 @@ extension AppDelegate {
 extension AppDelegate {
     
     
-    func setConfig()  {
+    func config()  {
         
         DAOManager.createDAO()
+        
+        GNHUD.dimsBackground = true
+        
     }
 
 
 }
 
+extension AppDelegate {
+    
+    func addNotification()  {
+        
+        NotificationCenter.default.reactive.notifications(forName: kHTTPFAil, object: nil).observeValues { (n) in
+            
+            let desc = n.object as! String
+            GNHUD.flash(GNHUDContentType.labeledError(title: nil, subtitle: desc), delay: 1.0)
+            
+        }
+    }
+    
+}

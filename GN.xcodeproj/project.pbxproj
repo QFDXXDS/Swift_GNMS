@@ -29,7 +29,7 @@
 		F0398418204AEFC400567077 /* RcdMainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0398417204AEFC400567077 /* RcdMainVC.swift */; };
 		F039841A204AEFFA00567077 /* RcdSingerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0398419204AEFFA00567077 /* RcdSingerVC.swift */; };
 		F039841C204AF00C00567077 /* RcdHotVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F039841B204AF00C00567077 /* RcdHotVC.swift */; };
-		F046B1C6204E209A0040BCC1 /* PlayerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F046B1C5204E209A0040BCC1 /* PlayerService.swift */; };
+		F046B1C6204E209A0040BCC1 /* PlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F046B1C5204E209A0040BCC1 /* PlayerViewModel.swift */; };
 		F046B1C8204E69D60040BCC1 /* PlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F046B1C7204E69D60040BCC1 /* PlayerManager.swift */; };
 		F046B1CB204E6B6B0040BCC1 /* PlayerReq.swift in Sources */ = {isa = PBXBuildFile; fileRef = F046B1CA204E6B6B0040BCC1 /* PlayerReq.swift */; };
 		F046B1D0204E77650040BCC1 /* PlayerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F046B1CF204E77650040BCC1 /* PlayerModel.swift */; };
@@ -91,7 +91,7 @@
 		F0398417204AEFC400567077 /* RcdMainVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RcdMainVC.swift; sourceTree = "<group>"; };
 		F0398419204AEFFA00567077 /* RcdSingerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RcdSingerVC.swift; sourceTree = "<group>"; };
 		F039841B204AF00C00567077 /* RcdHotVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RcdHotVC.swift; sourceTree = "<group>"; };
-		F046B1C5204E209A0040BCC1 /* PlayerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerService.swift; sourceTree = "<group>"; };
+		F046B1C5204E209A0040BCC1 /* PlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewModel.swift; sourceTree = "<group>"; };
 		F046B1C7204E69D60040BCC1 /* PlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerManager.swift; sourceTree = "<group>"; };
 		F046B1CA204E6B6B0040BCC1 /* PlayerReq.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerReq.swift; sourceTree = "<group>"; };
 		F046B1CF204E77650040BCC1 /* PlayerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerModel.swift; sourceTree = "<group>"; };
@@ -411,7 +411,7 @@
 				F046B1CC204E76480040BCC1 /* Model */,
 				F046B1C9204E6B580040BCC1 /* Req */,
 				F046B1C3204E207A0040BCC1 /* Manager */,
-				F046B1C4204E207A0040BCC1 /* S */,
+				F046B1C4204E207A0040BCC1 /* VM */,
 			);
 			name = Player;
 			path = GN/Player;
@@ -425,12 +425,12 @@
 			path = Manager;
 			sourceTree = "<group>";
 		};
-		F046B1C4204E207A0040BCC1 /* S */ = {
+		F046B1C4204E207A0040BCC1 /* VM */ = {
 			isa = PBXGroup;
 			children = (
-				F046B1C5204E209A0040BCC1 /* PlayerService.swift */,
+				F046B1C5204E209A0040BCC1 /* PlayerViewModel.swift */,
 			);
-			path = S;
+			path = VM;
 			sourceTree = "<group>";
 		};
 		F046B1C9204E6B580040BCC1 /* Req */ = {
@@ -769,20 +769,26 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-GN/Pods-GN-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework",
+				"${BUILT_PRODUCTS_DIR}/HandyJSON/HandyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
+				"${BUILT_PRODUCTS_DIR}/PKHUD/PKHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/ReactiveCocoa/ReactiveCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/ReactiveSwift/ReactiveSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
+				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HandyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PKHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -839,7 +845,7 @@
 				F046B1CB204E6B6B0040BCC1 /* PlayerReq.swift in Sources */,
 				F046B1D0204E77650040BCC1 /* PlayerModel.swift in Sources */,
 				F00175732046FC190039C7F7 /* GNHTTPProtocol.swift in Sources */,
-				F046B1C6204E209A0040BCC1 /* PlayerService.swift in Sources */,
+				F046B1C6204E209A0040BCC1 /* PlayerViewModel.swift in Sources */,
 				F001757720491C2E0039C7F7 /* MSService.swift in Sources */,
 				F0017567204557DE0039C7F7 /* GNWrapper.swift in Sources */,
 				F046B1DA204EDFB90040BCC1 /* PlayVC.swift in Sources */,
@@ -968,7 +974,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.XXDS.GNSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "GN/GN/Config/Swift_ Bridge.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -984,7 +990,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.XXDS.GNSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "GN/GN/Config/Swift_ Bridge.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};

@@ -19,46 +19,36 @@ class  RcdVM {
     var collectionArray = Array<Any>()
 
 
-    func getRecommendList(page: Int, size: Int) -> SignalProducer<Any, NoError>  {
+    func getRecommendList(page: Int, size: Int) -> GNSignal<Any, GNNoError >  {
         
         let req = RcdListReq()
         req.type = 2
         req.page = page
         req.size = size
         
-        
-        let producer = SignalProducer<Any, NoError>.init { (ob, _) in
+        let (signal,ob) = GNSignal<Any, GNNoError>.pipe()
+
+        GN.HTTPRequesgt(req: req).observeValues { (rsp) in
             
-            GN.HTTPRequesgt(req: req) { (rsp, err) in
-                
-                if rsp is Dictionary<String, Any> {
-                    
-                    self.tableArray = RcdModel.wrraperData(object: rsp as! Dictionary<String, Any>)
-                }
-                print("RecommendList is \(String(describing: rsp))")
-                ob.sendCompleted()
-            }
-        };
-        
-        return producer
+            self.tableArray = RcdModel.wrraperData(object: rsp as! Dictionary<String, Any>)
+            print("RecommendList is \(String(describing: rsp))")
+            ob.sendCompleted()
+        }
+      
+        return signal
     }
-    func getRecommendScrollList() -> SignalProducer<Any, NoError>  {
+    func getRecommendScrollList() -> GNSignal<Any, GNNoError >   {
         
         let req = RcdListScrollReq()
         req.type = 1
-        
-        let producer = SignalProducer<Any, NoError>.init { (ob, _) in
+        let (signal,ob) = GNSignal<Any, GNNoError>.pipe()
 
-            GN.HTTPRequesgt(req: req) { (rsp, err) in
-                
-                if rsp is Dictionary<String,Any> {
-                    
-                    self.collectionArray = RcdScrollModel.wrraperData(object: rsp as! Dictionary<String, Any>)
-                }
-                ob.sendCompleted()
-            }
+        GN.HTTPRequesgt(req: req).observeValues { (rsp) in
+            
+             self.collectionArray = RcdScrollModel.wrraperData(object: rsp as! Dictionary<String, Any>)
+            ob.sendCompleted()
         }
         
-        return producer
+        return signal
     }
 }

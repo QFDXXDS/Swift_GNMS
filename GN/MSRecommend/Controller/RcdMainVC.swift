@@ -33,12 +33,13 @@ class RcdMainVC: UITableViewController {
     }
     func loadData()  {
         
-        vm.getRecommendList(page: page, size: size).startWithCompleted { [weak self] in
+        GNHUD.show(GNHUDContentType.label("请等待......"))
         
-            self!.tableView.reloadData()
-            
-
+        vm.getRecommendList(page: page, size: size).observeCompleted {
+            GNHUD.flash(GNHUDContentType.success, delay: 1.0)
+            self.tableView.reloadData()
         }
+       
     }
     func setupUI()  {
         
@@ -48,7 +49,6 @@ class RcdMainVC: UITableViewController {
 
         
         let view = RcdScrollView.init(frame: CGRect.init(x: 0, y: 0, width: kScreenWidth, height: 150))
-//        self.tableView.frame = CGRect.init(x: 0, y: 0, width: kScreenWidth, height: 150)
         let v = UIView.init(frame: CGRect.init(x: 0, y: 0, width: kScreenWidth, height: 150))
         self.tableView.tableHeaderView = v
         self.tableView.tableHeaderView?.addSubview(view)

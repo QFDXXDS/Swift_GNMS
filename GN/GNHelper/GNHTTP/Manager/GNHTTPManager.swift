@@ -10,33 +10,35 @@ import Foundation
 import Alamofire
 
 
-func HTTPRequesgt(
-            req: GNHTTPReq,
-        success: @escaping (Any?,Any?)->Void )  {
+func HTTPRequesgt(req: GNHTTPReq) -> GNSignal<Any, GNNoError >  {
     
+    let (signal,ob) = GNSignal<Any, GNNoError>.pipe()
     Alamofire.request(req.URLStr(), method: req.reqMethod(), parameters: req.parameters()).responseJSON { (rsp) in
         
         switch rsp.result {
             
-        case .success(_):
+        case .success(let value):
             
-            success(rsp.result.value as Any  , nil)
+            ob.send(value:value )
             break
             
-        case .failure(_):
-            success(nil, rsp.error)
+        case .failure(let fail):
             
+            NotificationCenter.default.post(name: kHTTPFAil, object: fail.localizedDescription)
             break
-            
         }
+        ob.sendCompleted()
     }
+    return signal
 }
 
 func HTTPDownload(
-    req: GNHTTPReq,
-    success: @escaping (Any?,Any?)->Void, downloadProgress: @escaping (String) -> Void ) {
+    req: GNHTTPReq) -> GNSignal<Any, GNNoError > {
     
+//    success: @escaping (Any?,Any?)->Void, downloadProgress: @escaping (String) -> Void ) {
     
+    let (signal,ob) = GNSignal<Any, GNNoError>.pipe()
+
     let downloadConfig : DownloadRequest.DownloadFileDestination = {_,response in
         
         //两个参数表示如果有同名文件则会覆盖，如果路径中文件夹不存在则会自动创建
@@ -52,27 +54,26 @@ func HTTPDownload(
         
             let  pp = (Float(progress.completedUnitCount) / Float(progress.totalUnitCount)) * 100
             let s = String(format: "%.0f", pp)
-            downloadProgress(s)
+        
+            ob.send(value: s)
 //        }
                 
         }.responseData { (rsp) in
             
             switch rsp.result {
                 
-            case .success(let value):
-                
-                success(value , nil)
+            case .success(_):
+                ob.sendCompleted()
                 break
                 
-            case .failure(_):
-                success(nil, rsp.error)
+            case .failure(let fail):
                 
+                NotificationCenter.default.post(name: kHTTPFAil, object: fail.localizedDescription)
+                ob.sendInterrupted()
                 break
-                
             }
-            
-            
+        
     }
     
-    
+    return signal
 }

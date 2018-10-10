@@ -24,21 +24,18 @@ class DownloadVM: NSObject {
         
         let req = songReq.init(link:model.songLink as! String, name: model.songName as! String, songId: model.songId!  )
         
-        
-        GN.HTTPDownload(req: req, success: { (rsp, err) in
+        let sig = GN.HTTPDownload(req: req)
+        sig.observeCompleted {
             
-            if err == nil {
-                
-                DownloadDAO.insertModel(model: model)
-            }
-
-        }, downloadProgress: { (s) in
+            DownloadDAO.insertModel(model: model)
+        }
+        sig.observeValues { (s) in
             
             ob.send(value: s)
-        })
-        
+        }
         return signal
     }
+    
     func downloadLyric(model: PlayerModel) ->  Signal<Any, NoError>  {
         
         let (signal,ob) = Signal<Any, NoError>.pipe()

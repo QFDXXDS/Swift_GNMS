@@ -32,7 +32,7 @@ class RcdVC: UIViewController {
             
             var vc = self.storyboard?.instantiateViewController(withIdentifier: title)
             
-            self.addChild(vc!)
+            self.addChildViewController(vc!)
             temp.append(vc as Any)
         }
         return temp

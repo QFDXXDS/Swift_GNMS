@@ -62,7 +62,7 @@ class DownloadVC: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
         let model = vm.tableArray[indexPath.row]
         let songId = model.songId as! String
-        PlayerManager.ma.model.value =  model
+        PlayerManager.ma.vm.model.value =  model
         PlayerManager.ma.name.value = model.songName as! String
         PlayerManager.ma.buffer.value = 1
        let url = URL.init(fileURLWithPath: GNPath.cachePath() + "/" + "music/" + songId + ".mp3")
