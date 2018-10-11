@@ -9,7 +9,7 @@
 
 class PlayerReq: GNHTTPReq {
 
-    var songIds = ""
+    var songIds: Int?
     
     override func URLStr() -> String {
         

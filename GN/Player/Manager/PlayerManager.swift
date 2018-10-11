@@ -17,7 +17,6 @@ class PlayerManager: NSObject {
 
     let vm = PlayerVM()
     
-
     var name = MutableProperty("")
     
     var playState = MutableProperty(false)
@@ -26,13 +25,11 @@ class PlayerManager: NSObject {
     var currentValue = MutableProperty(Float(0))
     var buffer = MutableProperty(Float(0))
     
+    
     var history = [PlayerModel]()
-
-    var historyDic = Dictionary<String,PlayerModel>()
+    var historyDic = Dictionary<Int,PlayerModel>()
 
     
-    
-
     var totalTime: Int?
     var playItem: AVPlayerItem?
     var observer: Signal<Any, NoError>.Observer?
@@ -45,7 +42,7 @@ class PlayerManager: NSObject {
         return t
     }()
     
-    lazy var producer: Signal<Any,NoError>? = {
+    lazy var playSignal: Signal<Any,NoError>? = {
         
         let (signal,ob) = Signal<Any, NoError>.pipe()
         self.observer = ob
@@ -53,7 +50,8 @@ class PlayerManager: NSObject {
         return signal
     }()
     
-
+    
+    
     static let ma = PlayerManager()
     private override init() {
         
@@ -77,6 +75,8 @@ class PlayerManager: NSObject {
             self.currentValue.value  = 0.0
             self.buffer.value = 0.0
             self.playState.value = false
+            self.observer?.send(value: false)
+
             self.currentValue.value = 0.0
             print("AVPlayerItemDidPlayToEndTime")
             
@@ -84,12 +84,13 @@ class PlayerManager: NSObject {
         NotificationCenter.default.reactive.notifications(forName: Notification.Name.AVPlayerItemNewAccessLogEntry).observe { _ in
             
             print("AVPlayerItemTimeJumped")
-            
         }
         
         NotificationCenter.default.reactive.notifications(forName: Notification.Name.AVPlayerItemNewErrorLogEntry).observe { _ in
             
             self.playState.value = false
+            self.observer?.send(value: false)
+
             print("AVPlayerItemTimeJumped")
             
         }
@@ -105,10 +106,9 @@ class PlayerManager: NSObject {
             
             if array.count > 0 {
                 
-                self.history.append(contentsOf: array)
-                self.vm.model.value = self.history[0]
+//                self.history.append(contentsOf: array)
+                self.vm.model.value = array[0]
                 self.name.value = self.vm.model.value.songName as! String
-
             }
         }
     }
@@ -130,7 +130,15 @@ class PlayerManager: NSObject {
                 let durationSeconds = CMTimeGetSeconds(timeRange.duration);
                 
                 buffer.value = Float((startSeconds + durationSeconds)) / Float(totalTime!)
+                
+
+                if !playState.value {
+                    
+                    playState.value = true
+                    self.observer?.send(value: true)
+                }
                 print("loadedTimeRanges is \(buffer.value)")
+                
             }
         }
     }
@@ -154,14 +162,15 @@ class PlayerManager: NSObject {
             print("unknown")
         case .readyToPlay:
             
-            self.playState.value = true
+            playState.value = true
+            self.observer?.send(value: true)
             duration.value = String.stringWithSeconds(seconds: durationTime())
             timer.fireDate = Date.distantPast
-            self.observer?.send(Signal<Any, NoError>.Event.value(""))
             
         case .failed:
-            print("unknown")
+
             self.playState.value = false
+            self.observer?.send(value: false)
         }
     }
     
@@ -174,10 +183,7 @@ class PlayerManager: NSObject {
             totalTime = Int(length)
         }
         return totalTime!
-
     }
-    
-    
 }
 
 
@@ -192,26 +198,33 @@ extension PlayerManager {
         ma.player.replaceCurrentItem(with: ma.playItem)
         
         
-        self.play(true)
+        ma.player.play()
         
         ma.playItem?.addObserver(ma, forKeyPath: "status", options: [.new,.old], context: nil)   //  系统提供可以直接使用addObserver
         ma.playItem?.addObserver(ma, forKeyPath: "loadedTimeRanges", options: [.new,.old], context: nil)
-
-//        ma.timer.fireDate = Date.distantFuture
-        ma.observer!.send(Signal.Event.completed)  // k获取歌词
-        
-        
     }
     class func play(_ play: Bool)  {
         
         if ma.playItem == nil {
             
-            if ma.history.count > 0 {
-                PlayerManager.play(url: URL.init(string: ma.vm.model.value.songLink as! String)!)
-            }
+//            if ma.history.count > 0 {
+            
+//                PlayerManager.play(url: URL.init(string: ma.vm.model.value.songLink as! String)!)
+                PlayerManager.playWithSongID(ma.vm.model.value.songId!)
+                
+//            }
         } else {
             
-            play ? ma.player.play() : ma.player.pause()
+            if play {
+                
+                ma.player.play()
+            } else {
+                
+                ma.playState.value = false
+                ma.observer?.send(value: false)
+
+                ma.player.pause()
+            }
             ma.timer.fireDate = Date.distantFuture
         }
     }
@@ -255,21 +268,17 @@ extension PlayerManager {
 
             ma.vm.model.value = ma.history[index! + 1]
             PlayerManager.play(url: URL.init(string: ma.vm.model.value.songLink as! String)!)
-
         }
-        
     }
- 
-}
+ }
 
 extension  PlayerManager  {
     
-    
-    class func  playWithSongID(_ songID: String) -> GNSignal<Any, GNNoError>  {
+    class func  playWithSongID(_ songID: Int) -> GNSignal<Any, GNNoError>  {
     
         let (signal, ob) = GNSignal<Any, GNNoError>.pipe()
         if ma.historyDic[songID] == nil {
-            
+        
             ma.vm.getSong(singID: songID).observeCompleted {
             
                 ma.history.append( ma.vm.model.value)
@@ -277,7 +286,6 @@ extension  PlayerManager  {
                 PlayerManager.play(url: URL.init(string: ma.vm.model.value.songLink as! String)!)
                 ob.sendCompleted()
             }
-           
         } else {
             
             ma.vm.model.value = ma.historyDic[songID]!
@@ -289,3 +297,8 @@ extension  PlayerManager  {
     
 }
 
+//http://zhangmenshiting.qianqian.com/data2/music/91da8a2655f5d8aed0863451f7a43901/596916037/124415468158400128.mp3?xcode=e9015c8b6d638aaa0fd1a9e14bd081d7
+
+//http://zhangmenshiting.qianqian.com/data2/music/91da8a2655f5d8aed0863451f7a43901/596916037/124415468158400128.mp3?xcode=e9015c8b6d638aaa0fd1a9e14bd081d7
+
+//http://zhangmenshiting.qianqian.com/data2/music/91da8a2655f5d8aed0863451f7a43901/596916037/124415468158400128.mp3?xcode=2d1d9655cc558c50b169a51e193c0fa9

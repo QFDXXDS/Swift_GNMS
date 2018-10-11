@@ -15,7 +15,6 @@ import ReactiveSwift
 class MSListCell: UITableViewCell {
 
     
-    
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var time: UILabel!
     @IBOutlet weak var artist_name: UILabel!
@@ -23,6 +22,11 @@ class MSListCell: UITableViewCell {
     @IBOutlet weak var playBt: UIButton!
     @IBOutlet weak var imgView: UIImageView!
     
+//    required init?(coder aDecoder: NSCoder) {
+//        super.init(coder: aDecoder)
+//
+//
+//    }
     var model: RcdModel? {
         
         willSet {
@@ -68,6 +72,24 @@ class MSListCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
+       PlayerManager.ma.playSignal?.observeValues({ [weak self] (_) in
+            
+            print("awakeFromNib")
+            print(self?.model!.song_id)
+            print(PlayerManager.ma.vm.model.value.songId)
+
+            if self?.model!.song_id == PlayerManager.ma.vm.model.value.songId   {
+                
+                self?.playBt.isSelected = PlayerManager.ma.playState.value
+            } else {
+                
+                self?.playBt.isSelected = false
+
+            }
+            
+            
+        })
+        
 //        playBt.reactive.isSelected <~ PlayerManager.ma.playState
     }
 

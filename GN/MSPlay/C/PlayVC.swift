@@ -63,18 +63,15 @@ class PlayVC: UIViewController {
             PlayerManager.seek(value: v)
             }
         
-        PlayerManager.ma.producer?.observe({ (v) in
+        PlayerManager.ma.playSignal?.observeValues({ (v) in
             
-//            self.vm.downloadLyric(model: PlayerManager.ma.model.value).observeCompleted({
-//
-//                self.tableView.reloadData()
-//            })
+            
+            //            self.vm.downloadLyric(model: PlayerManager.ma.model.value).observeCompleted({
+            //
+            //                self.tableView.reloadData()
+            //            })
 
         })
-        
-        
-    
-        
     }
     
     override func didReceiveMemoryWarning() {

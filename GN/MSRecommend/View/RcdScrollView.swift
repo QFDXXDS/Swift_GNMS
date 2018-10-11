@@ -35,7 +35,6 @@ class RcdScrollView: GNView {
     
     loadData()
     setUI()
-        
     }
     func loadData()  {
         
@@ -44,7 +43,6 @@ class RcdScrollView: GNView {
             self.scrollTimer.fireDate = Date.init(timeIntervalSinceNow: 5)
             self.collectionView.reloadData()
            self.collectionView.setContentOffset(CGPoint.init(x:self.frame.width, y: 0), animated: false)
-
         }
     }
     

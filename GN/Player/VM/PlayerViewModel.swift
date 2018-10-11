@@ -11,7 +11,7 @@ import UIKit
 class PlayerVM: NSObject {
 
     var model = MutableProperty(PlayerModel.init())
-     func  getSong(singID:String ) -> GNSignal<Any,GNNoError> {
+     func  getSong(singID:Int ) -> GNSignal<Any,GNNoError> {
         
         let req = PlayerReq()
         req.songIds = singID

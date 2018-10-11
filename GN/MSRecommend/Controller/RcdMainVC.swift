@@ -16,7 +16,7 @@ import Result
 class RcdMainVC: UIViewController {
     
     let vm = RcdVM()
-    var selectArray = [IndexPath]()
+//    var selectArray = [IndexPath]()
     var page =  1
     var size = 20
     
@@ -114,16 +114,8 @@ extension RcdMainVC: UITableViewDelegate,UITableViewDataSource {
         
         let model = vm.tableArray[indexPath.row] as? RcdModel
         let id: Int = model!.song_id ?? 0
-        PlayerManager.playWithSongID("\(id)").observeCompleted {
-            
-            self.tableView.reloadRows(at: self.selectArray, with: UITableViewRowAnimation.none)
-            if (self.selectArray.count > 1) {
-                
-                self.selectArray.removeFirst()
-            }
-        }
-        selectArray.append(indexPath)
-        
+        PlayerManager.playWithSongID(id)
+
     }
 
     
