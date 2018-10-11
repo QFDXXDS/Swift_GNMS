@@ -64,7 +64,6 @@ class PlayerView: GNView {
     
         DownloadVM.download(model: PlayerManager.ma.vm.model.value).observeValues { (v) in
             
-            
             self.progressBt.setTitle(v as! String, for: .normal)
 
             let progress = Int(v as! String)

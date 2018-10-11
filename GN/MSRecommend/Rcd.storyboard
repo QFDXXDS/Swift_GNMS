@@ -28,7 +28,7 @@
             </objects>
             <point key="canvasLocation" x="-359" y="143"/>
         </scene>
-        <!--RcdVC-->
+        <!--主页-->
         <scene sceneID="UHf-C1-KVO">
             <objects>
                 <viewController id="U65-Pd-65h" customClass="RcdVC" customModule="GN" customModuleProvider="target" sceneMemberID="viewController">
@@ -66,7 +66,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Vi8-0g-x01"/>
                     </view>
-                    <navigationItem key="navigationItem" id="PDp-8A-aPo">
+                    <navigationItem key="navigationItem" title="主页" id="PDp-8A-aPo">
                         <barButtonItem key="leftBarButtonItem" style="plain" systemItem="organize" id="Kt4-eY-uIE">
                             <connections>
                                 <action selector="onLeftItem:" destination="U65-Pd-65h" id="jqE-Xt-JUx"/>

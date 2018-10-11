@@ -18,7 +18,7 @@ class RcdMainVC: UIViewController {
     let vm = RcdVM()
 //    var selectArray = [IndexPath]()
     var page =  1
-    var size = 20
+    var size = 10
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -31,7 +31,8 @@ class RcdMainVC: UIViewController {
         setupUI()
         loadData()
     
-        print(self.view.frame)
+//        self.view.frame = UIScreen.main.bounds
+//        print(self.view.frame)
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
@@ -43,8 +44,11 @@ class RcdMainVC: UIViewController {
         GNHUD.show(GNHUDContentType.label("请等待......"))
         
         vm.getRecommendList(page: page, size: size).observeCompleted {
+            
             GNHUD.flash(GNHUDContentType.success, delay: 1.0)
             self.tableView.reloadData()
+            print(self.view.frame)
+            print(self.tableView.frame)
         }
     }
     func setupUI()  {
@@ -52,22 +56,20 @@ class RcdMainVC: UIViewController {
         tableView.register(UINib.init(nibName: "MSListCell", bundle: nil), forCellReuseIdentifier: "MSRecommendCell")
         tableView.delegate = self
         tableView.dataSource = self
-
         
+        print(self.tableView.frame)
         let view = RcdScrollView.init(frame: CGRect.init(x: 0, y: 0, width: kScreenWidth, height: 150))
         let v = UIView.init(frame: CGRect.init(x: 0, y: 0, width: kScreenWidth, height: 150))
+        v.addSubview(view)
         self.tableView.tableHeaderView = v
-        self.tableView.tableHeaderView?.addSubview(view)
-        
+       
     }
     
     override func viewDidAppear(_ animated: Bool) {
         
-        DispatchQueue.main.async {
-            
-            self.tableViewHeight.constant = self.view.frame.height
-
-        }
+        let height = self.navigationController?.navigationBar.frame.height
+        let height1 = UIApplication.shared.statusBarFrame.height
+        self.tableViewHeight.constant = kScreenHeight - height! - height1  - 50
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -111,7 +113,6 @@ extension RcdMainVC: UITableViewDelegate,UITableViewDataSource {
      func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         tableView.deselectRow(at: indexPath, animated: true)
-        
         let model = vm.tableArray[indexPath.row] as? RcdModel
         let id: Int = model!.song_id ?? 0
         PlayerManager.playWithSongID(id)

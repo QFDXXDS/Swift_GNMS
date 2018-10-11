@@ -131,12 +131,11 @@ class PlayerManager: NSObject {
                 
                 buffer.value = Float((startSeconds + durationSeconds)) / Float(totalTime!)
                 
-
-                if !playState.value {
-                    
-                    playState.value = true
-                    self.observer?.send(value: true)
-                }
+//                if !playState.value {
+//
+//                    playState.value = true
+//                    self.observer?.send(value: true)
+//                }
                 print("loadedTimeRanges is \(buffer.value)")
                 
             }
@@ -162,8 +161,6 @@ class PlayerManager: NSObject {
             print("unknown")
         case .readyToPlay:
             
-            playState.value = true
-            self.observer?.send(value: true)
             duration.value = String.stringWithSeconds(seconds: durationTime())
             timer.fireDate = Date.distantPast
             
@@ -193,40 +190,38 @@ extension PlayerManager {
     class func play(url: URL) {
         
         ma.playItem = AVPlayerItem.init(url: url)
-        ma.name.value = ma.vm.model.value.songName as! String
-        HistoryDao.insertModel(model: ma.vm.model.value)
         ma.player.replaceCurrentItem(with: ma.playItem)
-        
-        
-        ma.player.play()
-        
+        self.play(true)
+    
         ma.playItem?.addObserver(ma, forKeyPath: "status", options: [.new,.old], context: nil)   //  系统提供可以直接使用addObserver
         ma.playItem?.addObserver(ma, forKeyPath: "loadedTimeRanges", options: [.new,.old], context: nil)
+        
+        ma.name.value = ma.vm.model.value.songName as! String
+        HistoryDao.insertModel(model: ma.vm.model.value)
     }
     class func play(_ play: Bool)  {
         
-        if ma.playItem == nil {
-            
-//            if ma.history.count > 0 {
-            
-//                PlayerManager.play(url: URL.init(string: ma.vm.model.value.songLink as! String)!)
-                PlayerManager.playWithSongID(ma.vm.model.value.songId!)
-                
-//            }
-        } else {
-            
+//        if ma.playItem == nil {
+//
+////            if ma.history.count > 0 {
+//
+////                PlayerManager.play(url: URL.init(string: ma.vm.model.value.songLink as! String)!)
+//                PlayerManager.playWithSongID(ma.vm.model.value.songId!)
+//
+////            }
+//        } else {
+        
             if play {
                 
                 ma.player.play()
             } else {
                 
-                ma.playState.value = false
-                ma.observer?.send(value: false)
-
                 ma.player.pause()
             }
+            ma.playState.value = play
+            ma.observer?.send(value: play)
             ma.timer.fireDate = Date.distantFuture
-        }
+//        }
     }
     
     
@@ -248,12 +243,16 @@ extension PlayerManager {
             return model.songId  == ma.vm.model.value.songId
         }
 
-        if index! < ma.history.count && index! > 0   {
-
-            ma.vm.model.value = ma.history[index! - 1]
-            PlayerManager.play(url: URL.init(string: ma.vm.model.value.songLink as! String)!)
-
+        if index != nil {
+            
+            if index! < ma.history.count && index! > 0   {
+                
+                ma.vm.model.value = ma.history[index! - 1]
+                PlayerManager.play(url: URL.init(string: ma.vm.model.value.songLink as! String)!)
+                
+            }
         }
+        
 
     }
     class func next()  {
@@ -264,41 +263,42 @@ extension PlayerManager {
 
             return model.songId  == ma.vm.model.value.songId
         }
-        if index! < ma.history.count - 1 && ma.history.count > 1  {
-
-            ma.vm.model.value = ma.history[index! + 1]
-            PlayerManager.play(url: URL.init(string: ma.vm.model.value.songLink as! String)!)
+        
+        if index != nil {
+        
+            if index! < ma.history.count - 1 && ma.history.count > 1  {
+                
+                ma.vm.model.value = ma.history[index! + 1]
+                PlayerManager.play(url: URL.init(string: ma.vm.model.value.songLink as! String)!)
+            }
         }
     }
  }
 
 extension  PlayerManager  {
     
-    class func  playWithSongID(_ songID: Int) -> GNSignal<Any, GNNoError>  {
+    class func  playWithSongID(_ songID: Int)  {
     
-        let (signal, ob) = GNSignal<Any, GNNoError>.pipe()
-        if ma.historyDic[songID] == nil {
-        
-            ma.vm.getSong(singID: songID).observeCompleted {
+        if songID == ma.vm.model.value.songId && ma.playItem != nil {
             
-                ma.history.append( ma.vm.model.value)
-                ma.historyDic[songID] = ma.vm.model.value
-                PlayerManager.play(url: URL.init(string: ma.vm.model.value.songLink as! String)!)
-                ob.sendCompleted()
-            }
+            ma.playState.value ? self.play(false) : self.play(true)
         } else {
             
-            ma.vm.model.value = ma.historyDic[songID]!
-            PlayerManager.play(url: URL.init(string:  ma.vm.model.value.songLink as! String)!)
-            ob.sendCompleted()
+            if ma.historyDic[songID] == nil {
+                
+                ma.vm.getSong(singID: songID).observeCompleted {
+                    
+                    ma.history.append( ma.vm.model.value)
+                    ma.historyDic[songID] = ma.vm.model.value
+                    PlayerManager.play(url: URL.init(string: ma.vm.model.value.songLink as! String)!)
+                }
+            } else {
+                
+                ma.vm.model.value = ma.historyDic[songID]!
+                PlayerManager.play(url: URL.init(string:  ma.vm.model.value.songLink as! String)!)
+            }
         }
-        return signal
+        
     }
     
 }
-
-//http://zhangmenshiting.qianqian.com/data2/music/91da8a2655f5d8aed0863451f7a43901/596916037/124415468158400128.mp3?xcode=e9015c8b6d638aaa0fd1a9e14bd081d7
-
-//http://zhangmenshiting.qianqian.com/data2/music/91da8a2655f5d8aed0863451f7a43901/596916037/124415468158400128.mp3?xcode=e9015c8b6d638aaa0fd1a9e14bd081d7
-
-//http://zhangmenshiting.qianqian.com/data2/music/91da8a2655f5d8aed0863451f7a43901/596916037/124415468158400128.mp3?xcode=2d1d9655cc558c50b169a51e193c0fa9

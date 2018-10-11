@@ -211,13 +211,13 @@
 		F001753A2044FFD80039C7F7 /* MSDownload */ = {
 			isa = PBXGroup;
 			children = (
-				F0CEAE25205F4657004D4B5F /* D */,
+				F0CEAE25205F4657004D4B5F /* DAO */,
 				F0E53867205652F500BE1254 /* Manager */,
 				F0E538622056296000BE1254 /* Req */,
 				F001753B2044FFD80039C7F7 /* ViewModel */,
-				F001753C2044FFD80039C7F7 /* M */,
+				F001753C2044FFD80039C7F7 /* Model */,
 				F001753D2044FFD80039C7F7 /* Controller */,
-				F001753F2044FFD80039C7F7 /* V */,
+				F001753F2044FFD80039C7F7 /* View */,
 				F046B1E5205032E70040BCC1 /* Download.storyboard */,
 			);
 			name = MSDownload;
@@ -232,11 +232,11 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		F001753C2044FFD80039C7F7 /* M */ = {
+		F001753C2044FFD80039C7F7 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			path = M;
+			path = Model;
 			sourceTree = "<group>";
 		};
 		F001753D2044FFD80039C7F7 /* Controller */ = {
@@ -247,55 +247,47 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
-		F001753F2044FFD80039C7F7 /* V */ = {
+		F001753F2044FFD80039C7F7 /* View */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			path = V;
+			path = View;
 			sourceTree = "<group>";
 		};
 		F00175402044FFD80039C7F7 /* MSPlay */ = {
 			isa = PBXGroup;
 			children = (
-				F00175412044FFD80039C7F7 /* S */,
-				F00175422044FFD80039C7F7 /* M */,
-				F00175432044FFD80039C7F7 /* C */,
-				F00175452044FFD80039C7F7 /* V */,
+				F00175422044FFD80039C7F7 /* Model */,
+				F00175432044FFD80039C7F7 /* Controller */,
+				F00175452044FFD80039C7F7 /* View */,
 				F046B1DB204EDFD60040BCC1 /* Play.storyboard */,
 			);
 			name = MSPlay;
 			path = GN/MSPlay;
 			sourceTree = "<group>";
 		};
-		F00175412044FFD80039C7F7 /* S */ = {
+		F00175422044FFD80039C7F7 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			path = S;
+			path = Model;
 			sourceTree = "<group>";
 		};
-		F00175422044FFD80039C7F7 /* M */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = M;
-			sourceTree = "<group>";
-		};
-		F00175432044FFD80039C7F7 /* C */ = {
+		F00175432044FFD80039C7F7 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
 				F046B1D9204EDFB90040BCC1 /* PlayVC.swift */,
 			);
-			path = C;
+			path = Controller;
 			sourceTree = "<group>";
 		};
-		F00175452044FFD80039C7F7 /* V */ = {
+		F00175452044FFD80039C7F7 /* View */ = {
 			isa = PBXGroup;
 			children = (
 				F046B1DD204EE8FE0040BCC1 /* PlayerView.swift */,
 				F046B1DF204EE90D0040BCC1 /* PlayerView.xib */,
 			);
-			path = V;
+			path = View;
 			sourceTree = "<group>";
 		};
 		F00175462044FFD80039C7F7 /* MSRecommend */ = {
@@ -411,7 +403,7 @@
 				F046B1CC204E76480040BCC1 /* Model */,
 				F046B1C9204E6B580040BCC1 /* Req */,
 				F046B1C3204E207A0040BCC1 /* Manager */,
-				F046B1C4204E207A0040BCC1 /* VM */,
+				F046B1C4204E207A0040BCC1 /* ViewModel */,
 			);
 			name = Player;
 			path = GN/Player;
@@ -425,12 +417,12 @@
 			path = Manager;
 			sourceTree = "<group>";
 		};
-		F046B1C4204E207A0040BCC1 /* VM */ = {
+		F046B1C4204E207A0040BCC1 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
 				F046B1C5204E209A0040BCC1 /* PlayerViewModel.swift */,
 			);
-			path = VM;
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		F046B1C9204E6B580040BCC1 /* Req */ = {
@@ -641,27 +633,27 @@
 		F0B48ACF2058F057001EDB90 /* DAO */ = {
 			isa = PBXGroup;
 			children = (
-				F0B48AD02058F07B001EDB90 /* MA */,
+				F0B48AD02058F07B001EDB90 /* Manager */,
 			);
 			name = DAO;
 			path = GN/DAO;
 			sourceTree = "<group>";
 		};
-		F0B48AD02058F07B001EDB90 /* MA */ = {
+		F0B48AD02058F07B001EDB90 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
 				F0B48AD22058F08F001EDB90 /* DAOManager.swift */,
 			);
-			path = MA;
+			path = Manager;
 			sourceTree = "<group>";
 		};
-		F0CEAE25205F4657004D4B5F /* D */ = {
+		F0CEAE25205F4657004D4B5F /* DAO */ = {
 			isa = PBXGroup;
 			children = (
 				F0CEAE26205F468C004D4B5F /* DownloadDAO.swift */,
 				F02F39E9215E088E0082D9C8 /* HistoryDao.swift */,
 			);
-			path = D;
+			path = DAO;
 			sourceTree = "<group>";
 		};
 		F0E538622056296000BE1254 /* Req */ = {

@@ -31,7 +31,7 @@ class RcdVC: UIViewController {
         for title in titleArray {
             
             let vc = self.storyboard?.instantiateViewController(withIdentifier: title)
-            vc!.view.frame = CGRect.init(x: 0, y:0, width: kScreenWidth, height:self.collectionView.frame.height - 50 )
+//            vc!.view.frame = CGRect.init(x: 0, y:0, width: kScreenWidth, height:self.collectionView.frame.height - 50 )
 
             print("vc!.view.frame")
             print(vc!.view.frame)
@@ -89,7 +89,6 @@ class RcdVC: UIViewController {
 extension RcdVC: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
         
         return  CGSize.init(width: self.collectionView.frame.width, height: self.collectionView.frame.height)
     }
