@@ -8,17 +8,20 @@
 
 import UIKit
 
+fileprivate let scrollInterval = 5.0
+
 class RcdScrollView: GNView {
 
     @IBOutlet weak var page: UIPageControl!
     @IBOutlet weak var collectionView: UICollectionView!
     let RcdScrollCell = "RcdScrollCell"
     let vm = RcdVM()
+    var collectionViewWIdth: CGFloat = 0.0
+    
     lazy var scrollTimer: Timer = {
     
-        let timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.scroll), userInfo: nil, repeats: true)
+        let timer = Timer.scheduledTimer(timeInterval: scrollInterval, target: self, selector: #selector(self.scroll), userInfo: nil, repeats: true)
         timer.fireDate = Date.distantFuture
-        
         RunLoop.main.add(timer, forMode: .commonModes)
        return timer
     }()
@@ -35,12 +38,15 @@ class RcdScrollView: GNView {
     
     loadData()
     setUI()
+    
+    
+    collectionViewWIdth = self.collectionView.frame.width
     }
     func loadData()  {
         
         vm.getRecommendScrollList().observeCompleted {
             
-            self.scrollTimer.fireDate = Date.init(timeIntervalSinceNow: 5)
+            self.scrollTimer.fireDate = Date.init(timeIntervalSinceNow: scrollInterval)
             self.collectionView.reloadData()
            self.collectionView.setContentOffset(CGPoint.init(x:self.frame.width, y: 0), animated: false)
         }
@@ -68,30 +74,27 @@ extension RcdScrollView: UICollectionViewDelegate {
     
         if page.currentPage == 2 {
             
-            self.collectionView.contentOffset.x = self.frame.width
+            if (self.collectionView.contentOffset.x > collectionViewWIdth * 2 ) {
+                
+                self.collectionView.contentOffset.x = self.frame.width
+            }
         }
-        self.page.currentPage = Int(self.collectionView.contentOffset.x / self.collectionView.frame.width) - 1
+        self.page.currentPage = Int(self.collectionView.contentOffset.x / collectionViewWIdth) - 1
     
-        print(page.currentPage)
-
     }
+    
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         scrollTimer.fireDate = Date.distantFuture
     }
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-
 
         if self.collectionView.contentOffset.x == 0 {
             
             self.collectionView.contentOffset.x = 3 * self.frame.width
         }
         scrollViewDidEndScrollingAnimation(collectionView)
-        scrollTimer.fireDate = Date.init(timeIntervalSinceNow: 5)
+        scrollTimer.fireDate = Date.init(timeIntervalSinceNow: scrollInterval)
     }
-    
-
-    
-   
 }
 
 extension RcdScrollView: UICollectionViewDataSource {

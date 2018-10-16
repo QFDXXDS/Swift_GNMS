@@ -25,14 +25,14 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" tag="1000" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="idO-k8-p8D">
-                    <rect key="frame" x="191" y="5" width="40" height="40"/>
+                    <rect key="frame" x="215" y="5" width="40" height="40"/>
                     <state key="normal" image="player_next"/>
                     <connections>
                         <action selector="onButton:" destination="-1" eventType="touchUpInside" id="Osj-rs-CLy"/>
                     </connections>
                 </button>
                 <button opaque="NO" tag="1002" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mU2-lH-luL">
-                    <rect key="frame" x="271" y="5" width="40" height="40"/>
+                    <rect key="frame" x="295" y="5" width="40" height="40"/>
                     <state key="normal" image="player_next"/>
                     <connections>
                         <action selector="onButton:" destination="-1" eventType="touchUpInside" id="dmx-k3-m8c"/>
@@ -45,7 +45,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" tag="1001" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n0U-jd-cut">
-                    <rect key="frame" x="231" y="5" width="40" height="40"/>
+                    <rect key="frame" x="255" y="5" width="40" height="40"/>
                     <state key="normal" image="player_play"/>
                     <state key="selected" image="player_pause"/>
                     <connections>
@@ -53,15 +53,14 @@
                     </connections>
                 </button>
                 <button opaque="NO" tag="1003" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FpI-0m-mYn">
-                    <rect key="frame" x="311" y="8" width="54" height="34"/>
+                    <rect key="frame" x="335" y="8" width="30" height="34"/>
                     <state key="normal" image="player_offline"/>
                     <connections>
                         <action selector="onButton:" destination="-1" eventType="touchUpInside" id="I4w-nu-Grr"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ysp-B0-oem">
-                    <rect key="frame" x="311" y="8" width="54" height="34"/>
-                    <state key="normal" title="Button"/>
+                    <rect key="frame" x="335" y="8" width="30" height="34"/>
                 </button>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

@@ -33,15 +33,24 @@ class DownloadDAO: DAOProtocol {
         }
     }
     
-    class func fetchData(success: @escaping (Array<PlayerModel>)->Void )  {
+    class func fetchData(songId: Int?, success: @escaping (Array<PlayerModel>)->Void )  {
         
         DAOManager.db { (db) in
+            
+            do {
+
             var temp = [PlayerModel]()
 
-            let sql = String.init(format: "select * from DownloadDAO ")
-            do {
-             
-                let set = try db.executeQuery(sql, values: nil)
+            var sql: String
+            var set: FMResultSet
+            if songId == nil {
+                
+                sql = String.init(format: "select * from DownloadDAO ")
+                set = try db.executeQuery(sql, values: nil)
+            } else {
+                sql = String.init(format: "select * from DownloadDAO where songId = ?")
+                set = try db.executeQuery(sql, values: [songId])
+            }
                 while(set.next())  {
                     
                     var model = PlayerModel()
@@ -49,11 +58,15 @@ class DownloadDAO: DAOProtocol {
                     model.songName = set.string(forColumn: "songName")
                     model.artistName = set.string(forColumn: "artistName")
                     model.songPicBig = set.string(forColumn: "songPicBig")
-                    model.songLink = set.string(forColumn: "songLink")
                     model.lrcLink = set.string(forColumn: "lrcLink")
+                
+//                  返回本地路径
+                    
+                    let path = GNPath.cachePath() + "/" + "music/" + "\(model.songId!)" + ".mp3"
+                    model.songLink = path
+
                    temp.append(model)
                 }
-                
                 success(temp)
             }
             catch{
@@ -66,5 +79,29 @@ class DownloadDAO: DAOProtocol {
 
     }
     
+    class func isExist(songId: Int) -> Bool {
+        
+        var result = false
+        DAOManager.db { (db) in
+        
+            do {
+                let sql = String.init(format: "select *from DownloadDAO where songId = ?")
+
+                let set = try db.executeQuery(sql, values: [songId])
+                
+                if set.next() {
+                    
+                    result = true
+                }
+            } catch {
+                
+                
+            }
+        }
+        return result
+    }
+    
+    
+
     
 }

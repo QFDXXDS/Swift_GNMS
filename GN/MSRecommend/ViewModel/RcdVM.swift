@@ -15,7 +15,8 @@ import Result
 
 class  RcdVM {
 
-    var tableArray = Array<Any>()
+    var tableArray = MutableProperty(Array<Any>())
+
     var collectionArray = Array<RcdScrollModel>()
 
 
@@ -30,7 +31,7 @@ class  RcdVM {
 
         GN.HTTPRequesgt(req: req).observeValues { (rsp) in
             
-            self.tableArray = RcdModel.wrraperData(object: rsp as! Dictionary<String, Any>)
+            self.tableArray.value = RcdModel.wrraperData(object: rsp as! Dictionary<String, Any>)
             print("RecommendList is \(String(describing: rsp))")
             ob.sendCompleted()
         }
@@ -55,5 +56,12 @@ class  RcdVM {
         }
         
         return signal
+    }
+    
+    func selectModel(model: RcdModel)    {
+
+        PlayerManager.playWithSongID(model.song_id!)
+
+       
     }
 }

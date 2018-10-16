@@ -19,6 +19,7 @@ class RcdMainVC: UIViewController {
 //    var selectArray = [IndexPath]()
     var page =  1
     var size = 10
+    var data = MutableProperty(Array<Any>())
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -38,6 +39,13 @@ class RcdMainVC: UIViewController {
         
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
+        data <~ vm.tableArray
+        data.value.append("123456789")
+        
+        print(vm.tableArray.value)
+        print(data.value)
+        
     }
     func loadData()  {
         
@@ -98,14 +106,16 @@ extension RcdMainVC: UITableViewDelegate,UITableViewDataSource {
     
      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return  vm.tableArray.count
+        
+        
+        return  vm.tableArray.value.count
     }
     
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell: MSListCell  = tableView.dequeueReusableCell(withIdentifier: "MSRecommendCell", for: indexPath) as! MSListCell
         
-        cell.model = vm.tableArray[indexPath.row] as? RcdModel
+        cell.model = vm.tableArray.value[indexPath.row] as? RcdModel
         
         return cell
     }
@@ -113,11 +123,8 @@ extension RcdMainVC: UITableViewDelegate,UITableViewDataSource {
      func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         tableView.deselectRow(at: indexPath, animated: true)
-        let model = vm.tableArray[indexPath.row] as? RcdModel
-        let id: Int = model!.song_id ?? 0
-        PlayerManager.playWithSongID(id)
-
+        let model = vm.tableArray.value[indexPath.row] as? RcdModel
+        vm.selectModel(model: model!)
+       
     }
-
-    
 }

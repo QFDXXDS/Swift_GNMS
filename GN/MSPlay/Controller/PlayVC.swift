@@ -63,8 +63,7 @@ class PlayVC: UIViewController {
             PlayerManager.seek(value: v)
             }
         
-        PlayerManager.ma.playSignal?.observeValues({ (v) in
-            
+        PlayerManager.ma.playSignal.observeValues({ (v) in
             
             //            self.vm.downloadLyric(model: PlayerManager.ma.model.value).observeCompleted({
             //
@@ -178,7 +177,8 @@ class PlayVC: UIViewController {
 
 //        case 3:
         case 4:
-            DownloadVM.download(model: PlayerManager.ma.vm.model.value)
+//            vm.download(model: PlayerManager.ma.vm.model.value)
+            break
         default:
             break
         }

@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--DownloadVC-->
+        <!--我的下载-->
         <scene sceneID="Gb3-jy-H79">
             <objects>
                 <tableViewController storyboardIdentifier="DownloadVC" id="NMq-b0-dM2" customClass="DownloadVC" customModule="GN" customModuleProvider="target" sceneMemberID="viewController">
@@ -32,7 +32,7 @@
                             <outlet property="delegate" destination="NMq-b0-dM2" id="PaJ-G3-Tth"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="JW4-Z7-JOg">
+                    <navigationItem key="navigationItem" title="我的下载" id="JW4-Z7-JOg">
                         <barButtonItem key="leftBarButtonItem" systemItem="reply" id="tlP-Oh-z1u">
                             <connections>
                                 <action selector="onLeftItem:" destination="NMq-b0-dM2" id="Rqu-11-148"/>

@@ -41,6 +41,9 @@
 		F046B1E42050310C0040BCC1 /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F046B1E32050310C0040BCC1 /* SearchVC.swift */; };
 		F046B1E6205032E70040BCC1 /* Download.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F046B1E5205032E70040BCC1 /* Download.storyboard */; };
 		F046B1E82050331E0040BCC1 /* DownloadVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F046B1E72050331E0040BCC1 /* DownloadVC.swift */; };
+		F078FF6E216F2EF90044E269 /* PlayDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = F078FF6D216F2EF90044E269 /* PlayDao.swift */; };
+		F078FF71216F2F670044E269 /* PlayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F078FF70216F2F670044E269 /* PlayViewModel.swift */; };
+		F078FF7B2170302A0044E269 /* GNExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F078FF7A2170302A0044E269 /* GNExtension.swift */; };
 		F08740E11FA6CE240005A418 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08740D61FA6CE240005A418 /* AppDelegate.swift */; };
 		F08740E21FA6CE240005A418 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F08740D91FA6CE240005A418 /* LaunchScreen.storyboard */; };
 		F08740E31FA6CE240005A418 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F08740DB1FA6CE240005A418 /* Main.storyboard */; };
@@ -103,6 +106,9 @@
 		F046B1E32050310C0040BCC1 /* SearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
 		F046B1E5205032E70040BCC1 /* Download.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Download.storyboard; sourceTree = "<group>"; };
 		F046B1E72050331E0040BCC1 /* DownloadVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadVC.swift; sourceTree = "<group>"; };
+		F078FF6D216F2EF90044E269 /* PlayDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayDao.swift; sourceTree = "<group>"; };
+		F078FF70216F2F670044E269 /* PlayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayViewModel.swift; sourceTree = "<group>"; };
+		F078FF7A2170302A0044E269 /* GNExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GNExtension.swift; sourceTree = "<group>"; };
 		F08740C01FA6CB720005A418 /* GN.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GN.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F08740D61FA6CE240005A418 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F08740D91FA6CE240005A418 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -257,6 +263,8 @@
 		F00175402044FFD80039C7F7 /* MSPlay */ = {
 			isa = PBXGroup;
 			children = (
+				F078FF6F216F2F350044E269 /* VIewModel */,
+				F078FF6C216F2EB70044E269 /* DAO */,
 				F00175422044FFD80039C7F7 /* Model */,
 				F00175432044FFD80039C7F7 /* Controller */,
 				F00175452044FFD80039C7F7 /* View */,
@@ -441,6 +449,22 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		F078FF6C216F2EB70044E269 /* DAO */ = {
+			isa = PBXGroup;
+			children = (
+				F078FF6D216F2EF90044E269 /* PlayDao.swift */,
+			);
+			path = DAO;
+			sourceTree = "<group>";
+		};
+		F078FF6F216F2F350044E269 /* VIewModel */ = {
+			isa = PBXGroup;
+			children = (
+				F078FF70216F2F670044E269 /* PlayViewModel.swift */,
+			);
+			path = VIewModel;
+			sourceTree = "<group>";
+		};
 		F08740B71FA6CB720005A418 = {
 			isa = PBXGroup;
 			children = (
@@ -584,6 +608,7 @@
 				F0017566204557DE0039C7F7 /* GNWrapper.swift */,
 				F0E538632056447200BE1254 /* GNPath.swift */,
 				F02F39E7215C796B0082D9C8 /* String+Extension.swift */,
+				F078FF7A2170302A0044E269 /* GNExtension.swift */,
 			);
 			path = GNUtil;
 			sourceTree = "<group>";
@@ -815,6 +840,7 @@
 			files = (
 				F08740F61FA6DE710005A418 /* UIStoryBoard+Extension.swift in Sources */,
 				F09FEE2C2157330F00BACB83 /* UIExtension.swift in Sources */,
+				F078FF71216F2F670044E269 /* PlayViewModel.swift in Sources */,
 				F0017560204538FC0039C7F7 /* RcdReq.swift in Sources */,
 				F0CEAE27205F468C004D4B5F /* DownloadDAO.swift in Sources */,
 				F001756F2045A4FA0039C7F7 /* GNHTTPReq.swift in Sources */,
@@ -823,6 +849,7 @@
 				F09FEE1C2154C6A300BACB83 /* GNHTTPManager.swift in Sources */,
 				F09FEE2521572BEA00BACB83 /* RcdScrollView.swift in Sources */,
 				F02F39EF215E83670082D9C8 /* SearchVM.swift in Sources */,
+				F078FF6E216F2EF90044E269 /* PlayDao.swift in Sources */,
 				F09FEE23215684AE00BACB83 /* MSScrollCell.swift in Sources */,
 				F0E538692056530C00BE1254 /* DownloadManager.swift in Sources */,
 				F046B1E42050310C0040BCC1 /* SearchVC.swift in Sources */,
@@ -839,6 +866,7 @@
 				F00175732046FC190039C7F7 /* GNHTTPProtocol.swift in Sources */,
 				F046B1C6204E209A0040BCC1 /* PlayerViewModel.swift in Sources */,
 				F001757720491C2E0039C7F7 /* MSService.swift in Sources */,
+				F078FF7B2170302A0044E269 /* GNExtension.swift in Sources */,
 				F0017567204557DE0039C7F7 /* GNWrapper.swift in Sources */,
 				F046B1DA204EDFB90040BCC1 /* PlayVC.swift in Sources */,
 				F039841C204AF00C00567077 /* RcdHotVC.swift in Sources */,

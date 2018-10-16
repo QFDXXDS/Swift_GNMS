@@ -22,19 +22,11 @@ class MSListCell: UITableViewCell {
     @IBOutlet weak var playBt: UIButton!
     @IBOutlet weak var imgView: UIImageView!
     
-//    required init?(coder aDecoder: NSCoder) {
-//        super.init(coder: aDecoder)
-//
-//
-//    }
     var model: RcdModel? {
         
         willSet {
             
-            if newValue?.song_id == PlayerManager.ma.vm.model.value.songId   {
-                
-                playBt.isSelected = PlayerManager.ma.playState.value
-            }
+            playState(songID: (newValue?.song_id)!)
             
             guard  model?.song_id == newValue?.song_id else{
 //
@@ -49,50 +41,33 @@ class MSListCell: UITableViewCell {
                 return
             }
             
-//            print("willSet id")
-//            print(newValue?.song_id)
-//            print(PlayerManager.ma.vm.model.value.songId)
-
-            
         }
     }
     @IBAction func onButton(_ sender: UIButton) {
-        
-//        if sender.isSelected {
-//
-//            PlayerManager.play(sender.isSelected)
-//        } else {
-//
-//            let id: Int = model!.song_id ?? 0
-//            PlayerManager.playWithSongID("\(id)")
-//        }
         
         
     }
     override func awakeFromNib() {
         super.awakeFromNib()
 
-       PlayerManager.ma.playSignal?.observeValues({ [weak self] (_) in
-            
-            print("awakeFromNib")
-            print(self?.model!.song_id)
-            print(PlayerManager.ma.vm.model.value.songId)
-
-            if self?.model!.song_id == PlayerManager.ma.vm.model.value.songId   {
-                
-                self?.playBt.isSelected = PlayerManager.ma.playState.value
-            } else {
-                
-                self?.playBt.isSelected = false
-
-            }
-            
-            
-        })
+        PlayerManager.ma.playSignal.observeValues({ [weak self] (_) in
         
-//        playBt.reactive.isSelected <~ PlayerManager.ma.playState
+            self?.playState(songID: (self?.model!.song_id)!)
+        })
     }
-
+    
+    func playState(songID: Int) {
+        
+        
+        if songID == PlayerManager.ma.vm.model.value.songId   {
+            
+            self.playBt.isSelected = PlayerManager.ma.playState.value
+        } else {
+            
+            self.playBt.isSelected = false
+        }
+        
+    }
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 

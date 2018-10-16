@@ -31,14 +31,24 @@ class PlayerView: GNView {
     }
     */
 
+    let vm = PlayViewModel()
     
     override func createView() {
         
         nameLabel.reactive.text <~ PlayerManager.ma.name
         playBt.reactive.isSelected <~ PlayerManager.ma.playState
-        nameLabel.reactive.text <~ PlayerManager.ma.name
+        
+        downloadBt.reactive.isEnabled <~ vm.isEable
+        progressBt.reactive.isHidden <~ vm.progressHide
+
+        PlayerManager.ma.playSignal.observeValues({ (_) in
+            
+           self.vm.isDownload()
+        })
+        
+        
         forwardBt.transform = CGAffineTransform.init(rotationAngle: CGFloat.pi)
-        self.progressBt.isHidden = true
+        self.vm.isDownload()
     }
     
     @IBAction func onButton(_ sender: UIButton) {
@@ -47,11 +57,11 @@ class PlayerView: GNView {
             
         case 0:
             
-            PlayerManager.forword()
+            PlayerManager.nextOrForward(next: false)
         case 1:
             PlayerManager.play(!sender.isSelected)
         case 2:
-            PlayerManager.next()
+            PlayerManager.nextOrForward(next: true)
         case 3:
             download()
             
@@ -62,21 +72,19 @@ class PlayerView: GNView {
     
     func download() {
     
-        DownloadVM.download(model: PlayerManager.ma.vm.model.value).observeValues { (v) in
+        self.progressBt.isHidden = false
+        self.downloadBt.isHidden = true
+
+        let signal = vm.download(model: PlayerManager.ma.vm.model.value)
+            
+        signal.observeValues { (v) in
             
             self.progressBt.setTitle(v as! String, for: .normal)
-
-            let progress = Int(v as! String)
-            if progress! > 99 {
-                
-                self.progressBt.isHidden = true
-                self.downloadBt.isHidden = false
-                
-            } else {
-                
-                self.progressBt.isHidden = false
-                self.downloadBt.isHidden = true
-            }
+        }
+        signal.observeCompleted {
+            
+            self.progressBt.isHidden = true
+            self.downloadBt.isHidden = false
         }
     }
 }

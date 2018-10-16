@@ -16,26 +16,7 @@ class DownloadVM: NSObject {
 
     var tableArray = [PlayerModel]()
     var lyricArray = [Substring]()
-    
-    class  func download(model: PlayerModel) ->  Signal<Any, NoError>  {
         
-        let (signal,ob) = Signal<Any, NoError>.pipe()
-
-        
-        let req = songReq.init(link:model.songLink as! String, name: model.songName as! String, songId: model.songId!  )
-        
-        let sig = GN.HTTPDownload(req: req)
-        sig.observeCompleted {
-            
-            DownloadDAO.insertModel(model: model)
-        }
-        sig.observeValues { (s) in
-            
-            ob.send(value: s)
-        }
-        return signal
-    }
-    
     func downloadLyric(model: PlayerModel) ->  Signal<Any, NoError>  {
         
         let (signal,ob) = Signal<Any, NoError>.pipe()
@@ -79,7 +60,7 @@ class DownloadVM: NSObject {
         
         QueueScheduler.init(qos: .background, name: "123132", targeting: nil).schedule {
             
-            DownloadDAO.fetchData(){ temp in
+            DownloadDAO.fetchData(songId: nil){ temp in
                 
                 self.tableArray = temp
                 UIScheduler.init().schedule({
