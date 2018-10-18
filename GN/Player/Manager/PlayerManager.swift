@@ -143,10 +143,14 @@ class PlayerManager: NSObject {
     @objc func updateInfo()  {
         
         let item = self.player.currentItem
-        let length = item?.currentTime()
-        let current = Int(CMTimeGetSeconds((length)!))
-        currentDuration.value =  String.stringWithSeconds(seconds: current)
-        currentValue.value = Float(current) / Float(totalTime!)
+        
+        if item != nil  {
+            
+            let length = item?.currentTime()
+            let current = Int(CMTimeGetSeconds((length)!))
+            currentDuration.value =  String.stringWithSeconds(seconds: current)
+            currentValue.value = Float(current) / Float(totalTime!)
+        }
     }
 
     
@@ -188,16 +192,16 @@ extension PlayerManager {
     
     class func play(url: String) {
         
-        let item = ma.PlayerItemDic[ma.vm.model.value.songId!]
-        if item == nil {
-            
+//        let item = ma.PlayerItemDic[ma.vm.model.value.songId!]
+//        if item == nil {
+        
             ma.playItem = AVPlayerItem.init(url: URL.genaralURL(urlStr: url))
-            ma.PlayerItemDic[ma.vm.model.value.songId!] = ma.playItem
-        } else {
-            
-            ma.playItem = item
-            ma.player.seek(to: CMTime.init(value: CMTimeValue(0), timescale: 1))
-        }
+//            ma.PlayerItemDic[ma.vm.model.value.songId!] = ma.playItem
+//        } else {
+//
+//            ma.playItem = item
+//            ma.player.seek(to: CMTime.init(value: CMTimeValue(0), timescale: 1))
+//        }
         ma.player.replaceCurrentItem(with: ma.playItem)
         
         
@@ -225,9 +229,14 @@ extension PlayerManager {
             ma.timer.fireDate = Date.distantFuture
         } else {
             
-            getSong(songID: ma.vm.model.value.songId!)
-
-//            PlayerManager.playWithSongID(ma.vm.model.value.songId!)
+            if ma.vm.model.value.songId != nil {
+                
+                getSong(songID: ma.vm.model.value.songId!).observeCompleted {
+                    
+                    self.play(true)
+                }
+            }
+            
         }
     }
     
@@ -270,16 +279,19 @@ extension PlayerManager {
     }
     class func playModel(model: PlayerModel) {
         
-        //              有些歌曲链接会失效，历史记录不读取歌曲链接
+        //         有些歌曲链接会失效，历史记录不读取歌曲链接
         if model.songLink != nil {
         
-            ma.name.value = model.songName as! String
+            ma.name.value = model.songName!
             ma.vm.model.value = model
             PlayerManager.play(url: model.songLink!)
-            
+            ma.playState.value ? self.play(true) : self.play(false)
         } else {
 
-            getSong(songID: model.songId!)
+            getSong(songID: model.songId!).observeCompleted {
+                
+                ma.playState.value ? self.play(true) : self.play(false)
+            }
         }
     }
     
@@ -312,11 +324,17 @@ extension  PlayerManager  {
             }
             return false
         }
-        getSong(songID: songID)
+        getSong(songID: songID).observeCompleted {
+            
+            self.play(true)
+        }
     }
     
-    class func getSong(songID: Int){
+    
+    class func getSong(songID: Int) -> GNSignal<Any,GNNoError> {
         
+        let (signal,ob) = GNSignal<Any, GNNoError>.pipe()
+
        ma.dispose = ma.vm.getSong(songID: songID).observeCompleted {
             
             let i = ma.history.value.firstIndex(where: { (model) -> Bool in
@@ -331,6 +349,10 @@ extension  PlayerManager  {
                 ma.history.value[i!] = ma.vm.model.value
             }
             PlayerManager.play(url:  ma.vm.model.value.songLink! )
+        
+            ob.sendCompleted()
         }
+        
+        return signal
     }
 }

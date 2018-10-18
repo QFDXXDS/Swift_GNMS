@@ -74,7 +74,8 @@ extension RcdScrollView: UICollectionViewDelegate {
     
         if page.currentPage == 2 {
             
-            if (self.collectionView.contentOffset.x > collectionViewWIdth * 2 ) {
+            let i = self.page.currentPage + 1
+            if self.collectionView.contentOffset.x > collectionViewWIdth * CGFloat(i)  {
                 
                 self.collectionView.contentOffset.x = self.frame.width
             }

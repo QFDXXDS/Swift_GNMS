@@ -32,7 +32,7 @@ class PlayerVM: NSObject {
                     let m = array[0]
                     
                     self.model.value = m
-                     self.name.value = self.model.value.songName as! String
+                    self.name.value = self.model.value.songName!
                     ob.sendCompleted()
 
                 }
@@ -44,7 +44,7 @@ class PlayerVM: NSObject {
                 GN.HTTPRequesgt(req: req).observeValues { (rsp) in
                     
                     self.model.value = PlayerModel.wrraperData(object: rsp)
-                    self.name.value = self.model.value.songName as! String
+                    self.name.value = self.model.value.songName!
                     ob.sendCompleted()
                 }
             }
@@ -60,7 +60,7 @@ class PlayerVM: NSObject {
     
                 self.history.value.append(contentsOf: array)
                 self.model.value = array[0]
-                self.name.value = self.model.value.songName as! String
+                self.name.value = self.model.value.songName!
 
             }
         }

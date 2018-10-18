@@ -21,8 +21,7 @@ class DownloadVM: NSObject {
         
         let (signal,ob) = Signal<Any, NoError>.pipe()
         
-        
-        let req = lyricReq.init(link:model.lrcLink as! String, name: model.songName as! String, songId: model.songId!   )
+        _ = lyricReq.init(link:model.lrcLink! , name: model.songName! , songId: model.songId!   )
         
 //        GN.HTTPDownload(req: req) { (rsp, err) in
 //

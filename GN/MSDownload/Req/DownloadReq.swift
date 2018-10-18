@@ -11,16 +11,23 @@ import UIKit
 class DownloadReq: GNHTTPReq {
 
     
-    let link: String
-    let name: String
-    let songId: Int
-    let age = "dslcs"
+    var link: String?
+    var name: String?
+    var songId: Int?
 
-    init(link: String, name: String, songId: Int) {
+    convenience init(link: String, name: String, songId: Int) {
         
+        self.init()
+
         self.link = link
         self.songId = songId
         self.name = name
+        
+    }
+    
+    required init() {
+
+//        super.init()
     }
 }
 
@@ -28,12 +35,12 @@ class songReq: DownloadReq {
     
     override func URLStr() -> String {
         
-        return  self.link
+        return  self.link!
     }
     
     override func downloadFile() -> String {
         
-        return  DownloadManager.ma.path + "/" + ("\(songId)" + ".mp3" )
+        return  DownloadManager.ma.path + "/" + ("\(songId!)" + ".mp3" )
     }
 
 }
@@ -42,7 +49,7 @@ class lyricReq: DownloadReq {
     
     override func URLStr() -> String {
         
-        return  self.link
+        return  self.link!
     }
 
     override func downloadFile() -> String {

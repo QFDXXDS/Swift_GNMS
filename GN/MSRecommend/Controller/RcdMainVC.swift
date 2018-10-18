@@ -40,12 +40,6 @@ class RcdMainVC: UIViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
-        data <~ vm.tableArray
-        data.value.append("123456789")
-        
-        print(vm.tableArray.value)
-        print(data.value)
-        
     }
     func loadData()  {
         

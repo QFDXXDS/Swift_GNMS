@@ -10,11 +10,11 @@
 struct PlayerModel: GNHandyJSON {
     
     var songId : Int?
-    var songName : Any?
+    var songName : String?
     var artistName :  Any?
     var songPicBig : Any?
     var songLink : String?
-    var lrcLink : Any?
+    var lrcLink : String?
     var time : Any?
     var CurrentTime : Any?
 

@@ -27,5 +27,9 @@ class SearchReq: MSReq {
         
     }
     
+    required init() {
+//        fatalError("init() has not been implemented")
+    }
+    
     
 }

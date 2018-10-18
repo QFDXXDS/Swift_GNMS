@@ -47,11 +47,11 @@ class  RcdVM {
         GN.HTTPRequesgt(req: req).observeValues { (rsp) in
             
             self.collectionArray = RcdScrollModel.wrraperData(object: rsp as! Dictionary<String, Any>)
-            let first = self.collectionArray.first as! RcdScrollModel
-            let last = self.collectionArray.last as! RcdScrollModel
+            let first = self.collectionArray.first
+            let last = self.collectionArray.last
 
-            self.collectionArray.append(first)
-            self.collectionArray.insert(last, at: 0)
+            self.collectionArray.append(first!)
+            self.collectionArray.insert(last!, at: 0)
             ob.sendCompleted()
         }
         
@@ -61,7 +61,6 @@ class  RcdVM {
     func selectModel(model: RcdModel)    {
 
         PlayerManager.playWithSongID(model.song_id!)
-
        
     }
 }

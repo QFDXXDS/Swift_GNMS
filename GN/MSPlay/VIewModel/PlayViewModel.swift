@@ -16,14 +16,17 @@ class PlayViewModel {
     func isDownload()  {
       
         let songId = PlayerManager.ma.vm.model.value.songId
-        isEable.value = !DownloadDAO.isExist(songId:songId!)
+        if songId != nil {
+            
+            isEable.value = !DownloadDAO.isExist(songId:songId!)
+        }
     }
     
     func download(model: PlayerModel) ->  Signal<Any, NoError>  {
         
         progressHide.value = false
         let (signal,ob) = Signal<Any, NoError>.pipe()
-        
+
         let req = songReq.init(link:model.songLink as! String, name: model.songName as! String, songId: model.songId!  )
         
         let sig = GN.HTTPDownload(req: req)

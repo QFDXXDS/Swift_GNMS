@@ -9,12 +9,15 @@
 import UIKit
 import Alamofire
 
-@objcMembers class GNHTTPReq: NSObject, GNHTTPProtocol{
+@objcMembers class GNHTTPReq: NSObject, GNHTTPProtocol, GNHandyJSON {
 
     
+    required override  init() {
+//        super.init()
+    }
     func parameters() -> Dictionary<String, Any> {
         
-        return GN.wrapperReq(object: self)
+        return self.toJSON()!
     }
     
     func reqMethod() -> HTTPMethod {
