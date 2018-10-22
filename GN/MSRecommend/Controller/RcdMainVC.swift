@@ -19,7 +19,6 @@ class RcdMainVC: UIViewController {
 //    var selectArray = [IndexPath]()
     var page =  1
     var size = 10
-    var data = MutableProperty(Array<Any>())
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -49,8 +48,6 @@ class RcdMainVC: UIViewController {
             
             GNHUD.flash(GNHUDContentType.success, delay: 1.0)
             self.tableView.reloadData()
-            print(self.view.frame)
-            print(self.tableView.frame)
         }
     }
     func setupUI()  {

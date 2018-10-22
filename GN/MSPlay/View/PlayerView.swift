@@ -19,8 +19,6 @@ class PlayerView: GNView {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var playBt: UIButton!
     @IBOutlet weak var progressBt: UIButton!
-    
-    
     @IBOutlet weak var downloadBt: UIButton!
     
     /*
@@ -35,20 +33,18 @@ class PlayerView: GNView {
     
     override func createView() {
         
-        nameLabel.reactive.text <~ PlayerManager.ma.name
+        nameLabel.reactive.text <~ PlayerManager.ma.vm.name
         playBt.reactive.isSelected <~ PlayerManager.ma.playState
-        
-        downloadBt.reactive.isEnabled <~ vm.isEable
         progressBt.reactive.isHidden <~ vm.progressHide
+        progressBt.reactive.title <~ vm.progressValue
+        downloadBt.reactive.isHidden <~ vm.downloadHide
+        downloadBt.reactive.isEnabled <~ vm.isEable
 
-        PlayerManager.ma.playSignal.observeValues({ (_) in
+        PlayerManager.ma.vm.model.producer.startWithValues { [unowned self](newValue) in
             
-           self.vm.isDownload()
-        })
-        
-        
+             self.vm.isDownload()
+        }
         forwardBt.transform = CGAffineTransform.init(rotationAngle: CGFloat.pi)
-        self.vm.isDownload()
     }
     
     @IBAction func onButton(_ sender: UIButton) {
@@ -72,19 +68,6 @@ class PlayerView: GNView {
     
     func download() {
     
-        self.progressBt.isHidden = false
-        self.downloadBt.isHidden = true
-
-        let signal = vm.download(model: PlayerManager.ma.vm.model.value)
-            
-        signal.observeValues { (v) in
-            
-            self.progressBt.setTitle(v as! String, for: .normal)
-        }
-        signal.observeCompleted {
-            
-            self.progressBt.isHidden = true
-            self.downloadBt.isHidden = false
-        }
+         vm.download(model: PlayerManager.ma.vm.model.value)
     }
 }

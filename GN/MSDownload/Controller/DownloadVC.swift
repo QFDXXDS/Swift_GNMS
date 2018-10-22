@@ -63,7 +63,6 @@ class DownloadVC: UITableViewController {
         let model = vm.tableArray[indexPath.row]
         
         PlayerManager.ma.vm.model.value =  model
-        PlayerManager.ma.name.value = model.songName as! String
         PlayerManager.ma.buffer.value = 1
         
         let path = GNPath.cachePath() + "/" + "music/" + "\(model.songId!)" + ".mp3"

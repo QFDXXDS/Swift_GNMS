@@ -17,7 +17,6 @@ class PlayerManager: NSObject {
 
     let vm = PlayerVM()
     
-    var name = MutableProperty("")
     var playState = MutableProperty(false)
     var duration = MutableProperty("")
     var currentDuration = MutableProperty("")
@@ -34,10 +33,7 @@ class PlayerManager: NSObject {
     var playItem: AVPlayerItem?
     var player = AVQueuePlayer()
     
-    var playSignal: Signal<Any, NoError>
-    var observer: Signal<Any, NoError>.Observer
-
-    var dispose: Disposable?
+    
     
     lazy var timer: Timer = {
         
@@ -50,10 +46,8 @@ class PlayerManager: NSObject {
     static let ma = PlayerManager()
     private override init() {
         
-        (playSignal,observer) = Signal<Any, NoError>.pipe()
         super.init()
         
-        name <~ vm.name
         history <~ vm.history
         
         
@@ -64,12 +58,6 @@ class PlayerManager: NSObject {
         }
         NotificationCenter.default.reactive.notifications(forName: Notification.Name.AVPlayerItemNewAccessLogEntry).observe { (nty) in
             
-//            let n = nty.value as? Notification
-//            print(n?.object)
-//            print(n?.userInfo)
-//
-//            print("AVPlayerItemNewAccessLogEntry")
-            
         }
         
         
@@ -78,11 +66,7 @@ class PlayerManager: NSObject {
             self.timer.fireDate = Date.distantFuture
             self.currentValue.value  = 0.0
             self.buffer.value = 0.0
-            self.playState.value = false
-            self.observer.send(value: false)
-            self.currentValue.value = 0.0
-            print("AVPlayerItemDidPlayToEndTime")
-            
+            PlayerManager.nextOrForward(next: true)
         }
         NotificationCenter.default.reactive.notifications(forName: Notification.Name.AVPlayerItemNewAccessLogEntry).observe { (nty) in
             
@@ -96,13 +80,10 @@ class PlayerManager: NSObject {
         NotificationCenter.default.reactive.notifications(forName: Notification.Name.AVPlayerItemNewErrorLogEntry).observe { _ in
             
             self.playState.value = false
-            self.observer.send(value: false)
 
             print("AVPlayerItemTimeJumped")
             
         }
-
-        
         NotificationCenter.default.reactive.notifications(forName: Notification.Name.AVPlayerItemPlaybackStalled).observe { _ in
             
             print("AVPlayerItemPlaybackStalled")
@@ -161,7 +142,6 @@ class PlayerManager: NSObject {
         case .unknown:
             
             self.playState.value = false
-            self.observer.send(value: false)
         case .readyToPlay:
             
             duration.value = String.stringWithSeconds(seconds: durationTime())
@@ -171,7 +151,6 @@ class PlayerManager: NSObject {
 
             GNHUD.flash(GNHUDContentType.labeledError(title: nil, subtitle: "s播放失败"))
             self.playState.value = false
-            self.observer.send(value: false)
         }
     }
     
@@ -225,7 +204,6 @@ extension PlayerManager {
                 ma.player.pause()
             }
             ma.playState.value = play
-            ma.observer.send(value: play)
             ma.timer.fireDate = Date.distantFuture
         } else {
             
@@ -282,7 +260,6 @@ extension PlayerManager {
         //         有些歌曲链接会失效，历史记录不读取歌曲链接
         if model.songLink != nil {
         
-            ma.name.value = model.songName!
             ma.vm.model.value = model
             PlayerManager.play(url: model.songLink!)
             ma.playState.value ? self.play(true) : self.play(false)
@@ -335,7 +312,7 @@ extension  PlayerManager  {
         
         let (signal,ob) = GNSignal<Any, GNNoError>.pipe()
 
-       ma.dispose = ma.vm.getSong(songID: songID).observeCompleted {
+        ma.vm.getSong(songID: songID).observeCompleted {
             
             let i = ma.history.value.firstIndex(where: { (model) -> Bool in
                 

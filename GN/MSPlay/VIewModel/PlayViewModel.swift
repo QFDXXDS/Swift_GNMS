@@ -12,7 +12,10 @@ class PlayViewModel {
     
     var isEable = MutableProperty(true)
     var progressHide = MutableProperty(true)
+    var progressValue = MutableProperty("")
+    var downloadHide = MutableProperty(false)
 
+    
     func isDownload()  {
       
         let songId = PlayerManager.ma.vm.model.value.songId
@@ -22,26 +25,25 @@ class PlayViewModel {
         }
     }
     
-    func download(model: PlayerModel) ->  Signal<Any, NoError>  {
+    func download(model: PlayerModel)   {
         
         progressHide.value = false
-        let (signal,ob) = Signal<Any, NoError>.pipe()
-
-        let req = songReq.init(link:model.songLink as! String, name: model.songName as! String, songId: model.songId!  )
+        downloadHide.value = true
         
+        let req = songReq.init(link:model.songLink!, name: model.songName!, songId: model.songId!  )
         let sig = GN.HTTPDownload(req: req)
+        
         sig.observeCompleted {
             
             self.progressHide.value = true
+            self.downloadHide.value = false
             self.isEable.value = false
             DownloadDAO.insertModel(model: model)
-            ob.sendCompleted()
         }
         sig.observeValues { (s) in
             
-            ob.send(value: s)
+            self.progressValue.value = s as! String
         }
-        return signal
     }
 
 }

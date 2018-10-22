@@ -50,8 +50,8 @@ class PlayVC: UIViewController {
     }
     func setUI()  {
     
-        playBt.reactive.isSelected <~ PlayerManager.ma.playState
-        nameLabel.reactive.text <~ PlayerManager.ma.name
+//        playBt.reactive.isSelected <~ PlayerManager.ma.playState
+        nameLabel.reactive.text <~ PlayerManager.ma.vm.name
         slider.reactive.value <~  PlayerManager.ma.currentValue
         
         currentDurationLabel.reactive.text <~ PlayerManager.ma.currentDuration
@@ -63,14 +63,14 @@ class PlayVC: UIViewController {
             PlayerManager.seek(value: v)
             }
         
-        PlayerManager.ma.playSignal.observeValues({ (v) in
-            
+//        PlayerManager.ma.playSignal.observeValues({ (v) in
+        
             //            self.vm.downloadLyric(model: PlayerManager.ma.model.value).observeCompleted({
             //
             //                self.tableView.reloadData()
             //            })
 
-        })
+//        })
     }
     
     override func didReceiveMemoryWarning() {

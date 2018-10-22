@@ -50,10 +50,10 @@ class MSListCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        PlayerManager.ma.playSignal.observeValues({ [weak self] (_) in
-        
-            self?.playState(songID: (self?.model!.song_id)!)
-        })
+        PlayerManager.ma.playState.signal.observeValues { (_) in
+            
+            self.playState(songID: (self.model!.song_id)!)
+        }
     }
     
     func playState(songID: Int) {

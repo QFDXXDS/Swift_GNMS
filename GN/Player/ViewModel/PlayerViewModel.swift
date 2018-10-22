@@ -18,6 +18,10 @@ class PlayerVM: NSObject {
     
         super.init()
         historyList()
+        model.producer.startWithValues { [unowned self](newValue) in
+            
+            self.name.value = newValue.songName!
+        }
     }
     
      func  getSong(songID:Int ) -> GNSignal<Any,GNNoError> {
@@ -26,17 +30,16 @@ class PlayerVM: NSObject {
 
         DownloadDAO.fetchData(songId:songID) { (array) in
             
-            if array.count > 0  {
+            if !array.isEmpty  {
                 
                 DispatchQueue.main.async {
                     let m = array[0]
                     
                     self.model.value = m
-                    self.name.value = self.model.value.songName!
                     ob.sendCompleted()
-
+                    
                 }
-
+                
             } else {
                 
                 let req = PlayerReq()
@@ -44,7 +47,6 @@ class PlayerVM: NSObject {
                 GN.HTTPRequesgt(req: req).observeValues { (rsp) in
                     
                     self.model.value = PlayerModel.wrraperData(object: rsp)
-                    self.name.value = self.model.value.songName!
                     ob.sendCompleted()
                 }
             }
@@ -56,12 +58,10 @@ class PlayerVM: NSObject {
     func historyList()  {
     
         HistoryDao.fetchData { (array) in
-            if array.count > 0 {
+            if !array.isEmpty {
     
                 self.history.value.append(contentsOf: array)
                 self.model.value = array[0]
-                self.name.value = self.model.value.songName!
-
             }
         }
     }

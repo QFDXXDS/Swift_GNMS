@@ -21,7 +21,6 @@ struct PlayerModel: GNHandyJSON {
     
     static  func wrraperData(object: Any) -> PlayerModel  {
         
-        print(" PlayerModel is  \(object)")
         let dic = object as? Dictionary<String, Any>
         let dic1: Dictionary<String, Any> = dic!["data"] as! Dictionary<String, Any>
         let array:Array<Any> = dic1["songList"] as! Array
